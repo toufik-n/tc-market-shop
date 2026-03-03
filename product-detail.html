@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Detalle de producto en TC MARKET SHOP" />
+  <title>Producto — TC MARKET SHOP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="navbar-logo"><div class="logo-icon"><i class="fas fa-store"></i></div>TC MARKET</a>
+    <div class="navbar-search" id="navbar-search-wrap">
+      <i class="fas fa-search search-icon"></i>
+      <input type="search" id="navbar-search" placeholder="Buscar productos..." aria-label="Buscar" />
+    </div>
+    <div class="navbar-actions">
+      <a href="explore.html" class="nav-icon-btn" data-tooltip="Explorar"><i class="fas fa-compass"></i></a>
+      <a href="cart.html" class="nav-icon-btn" aria-label="Carrito">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="badge cart-badge" style="display:none">0</span>
+      </a>
+      <div id="nav-guest" style="display:none;gap:.75rem;align-items:center">
+        <a href="login.html" class="btn-nav btn-nav-outline">Entrar</a>
+        <a href="register.html" class="btn-nav btn-nav-fill">Registrarse</a>
+      </div>
+      <div id="nav-user" class="user-menu" style="display:none">
+        <div class="user-avatar" id="nav-avatar" data-dropdown-toggle="user-dropdown" role="button" tabindex="0"></div>
+        <div class="dropdown-menu" id="user-dropdown">
+          <a href="profile.html"><i class="fas fa-user"></i> Mi Perfil</a>
+          <a href="orders.html"><i class="fas fa-box"></i> Mis Pedidos</a>
+          <div class="divider"></div>
+          <button data-action="logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<div id="mobile-overlay"></div>
+
+<div style="max-width:1200px;margin:0 auto;padding:var(--space-6) var(--space-6)">
+  <nav class="breadcrumbs" id="breadcrumbs">
+    <a href="index.html">Inicio</a>
+    <span class="separator">/</span>
+    <a href="explore.html">Explorar</a>
+    <span class="separator">/</span>
+    <span class="current" id="bc-product">Producto</span>
+  </nav>
+
+  <!-- Not found -->
+  <div id="not-found" style="display:none">
+    <div class="empty-state">
+      <div class="empty-icon"><i class="fas fa-box-open"></i></div>
+      <h3>Producto no encontrado</h3>
+      <p>El producto que buscas no existe o ha sido eliminado.</p>
+      <a href="explore.html" class="btn btn-primary">Explorar productos</a>
+    </div>
+  </div>
+
+  <!-- Product content -->
+  <div id="product-content" style="display:none">
+    <div class="grid-2" style="gap:var(--space-10);align-items:start;margin-bottom:var(--space-12)">
+      <!-- Gallery -->
+      <div class="product-gallery animate-fade-up">
+        <div class="product-thumbs" id="product-thumbs"></div>
+        <div>
+          <img id="main-img" src="" alt="" class="product-main-img" />
+        </div>
+      </div>
+
+      <!-- Info -->
+      <div class="animate-fade-up delay-200">
+        <div id="prod-category-tag" style="margin-bottom:.75rem"></div>
+        <h1 id="prod-name" style="font-size:1.8rem;margin-bottom:.5rem"></h1>
+
+        <!-- Rating -->
+        <div class="rating" style="margin-bottom:1rem" id="prod-rating"></div>
+
+        <!-- Price -->
+        <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem" id="prod-price-section"></div>
+
+        <!-- Description -->
+        <p id="prod-description" style="margin-bottom:1.5rem;line-height:1.8"></p>
+
+        <!-- Tags -->
+        <div id="prod-tags" style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem"></div>
+
+        <!-- Stock -->
+        <div id="prod-stock-info" style="margin-bottom:1.5rem"></div>
+
+        <!-- Quantity -->
+        <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem">
+          <label style="font-weight:500;font-size:.9rem">Cantidad:</label>
+          <div class="qty-control">
+            <button class="qty-btn" id="qty-minus" aria-label="Reducir">−</button>
+            <span class="qty-value" id="qty-val">1</span>
+            <button class="qty-btn" id="qty-plus" aria-label="Aumentar">+</button>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div style="display:flex;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap">
+          <button class="btn btn-primary btn-lg" style="flex:2;min-width:180px" id="add-cart-btn">
+            <i class="fas fa-shopping-cart"></i> Añadir al carrito
+          </button>
+          <button class="btn btn-outline btn-lg" id="wishlist-btn" aria-label="Guardar">
+            <i class="far fa-heart"></i>
+          </button>
+        </div>
+        <a href="checkout.html" class="btn btn-secondary btn-block btn-lg" style="margin-bottom:1.5rem">
+          <i class="fas fa-bolt"></i> Comprar ahora
+        </a>
+
+        <!-- Store info -->
+        <div class="card card-body" id="store-info-card" style="display:flex;gap:1rem;align-items:center;background:var(--bg)">
+          <div id="store-logo-sm" style="width:44px;height:44px;border-radius:var(--radius-md);overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:1.2rem"></div>
+          <div style="flex:1;min-width:0">
+            <div style="font-weight:600;font-size:.9rem" id="store-name-sm"></div>
+            <div style="font-size:.78rem;color:var(--text-muted)"><i class="fas fa-star" style="color:#FDCB6E"></i> <span id="store-rating-sm"></span></div>
+          </div>
+          <a href="#" id="store-link-sm" class="btn btn-outline btn-sm">Ver tienda</a>
+        </div>
+
+        <!-- Benefits -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:1rem">
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;color:var(--text-muted)">
+            <i class="fas fa-truck" style="color:var(--accent)"></i> Envío gratis +50€
+          </div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;color:var(--text-muted)">
+            <i class="fas fa-undo" style="color:var(--primary)"></i> 30 días devolución
+          </div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;color:var(--text-muted)">
+            <i class="fas fa-shield-alt" style="color:var(--secondary)"></i> Compra segura
+          </div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.8rem;color:var(--text-muted)">
+            <i class="fas fa-headset" style="color:#B7860C"></i> Soporte 24/7
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Related products -->
+    <div>
+      <h2 class="section-title" style="margin-bottom:1.5rem">Productos relacionados</h2>
+      <div class="grid-4" id="related-products"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer" style="margin-top:4rem">
+  <div class="container">
+    <div class="footer-bottom">
+      <p>© 2024 TC MARKET SHOP</p>
+      <p><a href="index.html" style="color:rgba(255,255,255,.6)">Inicio</a> · <a href="explore.html" style="color:rgba(255,255,255,.6)">Explorar</a></p>
+    </div>
+  </div>
+</footer>
+
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/store.js"></script>
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/orders.js"></script>
+<script src="js/search.js"></script>
+<script src="js/app.js"></script>
+<script>
+let currentQty = 1;
+let currentProduct = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+  const params = TCSearch.getSearchParams();
+  const productId = params.id;
+
+  if (!productId) { showNotFound(); return; }
+
+  const product = TCProducts.getProductById(productId);
+  if (!product) { showNotFound(); return; }
+
+  currentProduct = product;
+  renderProduct(product);
+  renderRelated(product);
+  updateMetaTags(product);
+});
+
+function showNotFound() {
+  document.getElementById('not-found').style.display = 'block';
+}
+
+function renderProduct(p) {
+  document.title = `${p.name} — TC MARKET SHOP`;
+  document.getElementById('bc-product').textContent = TCUtils.truncate(p.name, 40);
+  document.getElementById('product-content').style.display = 'block';
+
+  // Gallery
+  const imgs = [p.image, ...(p.images || [])].filter(Boolean);
+  document.getElementById('main-img').src = imgs[0];
+  document.getElementById('main-img').alt = p.name;
+  const thumbsEl = document.getElementById('product-thumbs');
+  thumbsEl.innerHTML = imgs.slice(0, 4).map((img, i) => `
+    <img src="${img}" alt="${p.name}" class="product-thumb ${i===0?'active':''}" onclick="setMainImg(this, '${img}')" />
+  `).join('');
+
+  // Category
+  document.getElementById('prod-category-tag').innerHTML = `<span class="tag tag-primary">${p.category}</span>`;
+  document.getElementById('prod-name').textContent = p.name;
+
+  // Rating
+  const ratingEl = document.getElementById('prod-rating');
+  ratingEl.innerHTML = `${TCUtils.renderStars(p.rating)} <span class="count" style="color:var(--text-muted)"> ${p.rating} (${p.reviews} reseñas)</span>`;
+
+  // Price
+  const price = TCProducts.getEffectivePrice(p);
+  const discount = TCProducts.getDiscount(p);
+  const priceEl = document.getElementById('prod-price-section');
+  priceEl.innerHTML = `
+    <span style="font-family:var(--font-title);font-size:2rem;font-weight:700;color:var(--text)">${TCUtils.formatCurrency(price)}</span>
+    ${p.salePrice ? `<span style="text-decoration:line-through;color:var(--text-muted)">${TCUtils.formatCurrency(p.price)}</span>` : ''}
+    ${discount ? `<span class="tag tag-sale">-${discount}%</span>` : ''}
+  `;
+
+  // Description
+  document.getElementById('prod-description').textContent = p.description;
+
+  // Tags
+  const tagsEl = document.getElementById('prod-tags');
+  tagsEl.innerHTML = (p.tags || []).map(t => `<span class="tag tag-muted">#${t}</span>`).join('');
+
+  // Stock
+  const stockEl = document.getElementById('prod-stock-info');
+  if (p.stock > 0) {
+    const cls = p.stock <= 5 ? 'tag-warning' : 'tag-success';
+    stockEl.innerHTML = `<span class="tag ${cls}"><i class="fas fa-check-circle"></i> ${p.stock <= 5 ? `¡Solo ${p.stock} disponibles!` : 'En stock'}</span>`;
+  } else {
+    stockEl.innerHTML = `<span class="tag tag-danger"><i class="fas fa-times-circle"></i> Sin stock</span>`;
+    document.getElementById('add-cart-btn').disabled = true;
+  }
+
+  // Store
+  const store = TCStore.getStoreById(p.storeId);
+  if (store) {
+    const logoEl = document.getElementById('store-logo-sm');
+    logoEl.innerHTML = `<img src="${store.logo}" alt="${store.name}" style="width:100%;height:100%;object-fit:cover">`;
+    logoEl.style.background = store.color;
+    document.getElementById('store-name-sm').textContent = store.name;
+    document.getElementById('store-rating-sm').textContent = store.rating || '—';
+    document.getElementById('store-link-sm').href = `store-view.html?id=${store.id}`;
+  }
+
+  // Qty controls
+  const qtyVal = document.getElementById('qty-val');
+  document.getElementById('qty-minus').addEventListener('click', () => {
+    if (currentQty > 1) { currentQty--; qtyVal.textContent = currentQty; }
+  });
+  document.getElementById('qty-plus').addEventListener('click', () => {
+    if (currentQty < p.stock) { currentQty++; qtyVal.textContent = currentQty; }
+  });
+
+  // Add to cart
+  document.getElementById('add-cart-btn').addEventListener('click', () => {
+    const res = TCCart.addToCart(p.id, currentQty);
+    if (res.success) {
+      TCUtils.showToast('Añadido al carrito', 'success');
+      document.getElementById('add-cart-btn').innerHTML = '<i class="fas fa-check"></i> Añadido';
+      setTimeout(() => {
+        document.getElementById('add-cart-btn').innerHTML = '<i class="fas fa-shopping-cart"></i> Añadir al carrito';
+      }, 2000);
+    } else {
+      TCUtils.showToast(res.message, 'error');
+    }
+  });
+
+  // Wishlist
+  document.getElementById('wishlist-btn').addEventListener('click', function() {
+    this.innerHTML = '<i class="fas fa-heart" style="color:var(--secondary)"></i>';
+    TCUtils.showToast('Guardado en favoritos', 'success');
+  });
+}
+
+function setMainImg(thumb, src) {
+  document.getElementById('main-img').src = src;
+  document.querySelectorAll('.product-thumb').forEach(t => t.classList.remove('active'));
+  thumb.classList.add('active');
+}
+
+function renderRelated(p) {
+  const all = TCProducts.getProductsByCategory(p.category).filter(r => r.id !== p.id).slice(0, 4);
+  const grid = document.getElementById('related-products');
+  if (!all.length) { grid.closest('div').style.display = 'none'; return; }
+  grid.innerHTML = all.map(r => {
+    const price = TCProducts.getEffectivePrice(r);
+    const disc  = TCProducts.getDiscount(r);
+    return `
+      <a href="product-detail.html?id=${r.id}" class="product-card" style="display:block">
+        <div class="product-card-img-wrap">
+          <img src="${r.image}" alt="${r.name}" class="product-card-image" loading="lazy" />
+          ${disc ? `<div class="product-card-tag"><span class="tag tag-sale">-${disc}%</span></div>` : ''}
+        </div>
+        <div class="product-card-body">
+          <div class="product-card-category">${r.category}</div>
+          <h3 class="product-card-name">${r.name}</h3>
+          <div class="product-card-price">
+            <span class="price-current">${TCUtils.formatCurrency(price)}</span>
+            ${r.salePrice ? `<span class="price-original">${TCUtils.formatCurrency(r.price)}</span>` : ''}
+          </div>
+        </div>
+      </a>
+    `;
+  }).join('');
+}
+
+function updateMetaTags(p) {
+  const desc = document.querySelector('meta[name="description"]');
+  if (desc) desc.setAttribute('content', TCUtils.truncate(p.description, 160));
+}
+</script>
+</body>
+</html>

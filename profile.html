@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Mi perfil en TC MARKET SHOP" />
+  <title>Mi Perfil — TC MARKET SHOP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="navbar-logo"><div class="logo-icon"><i class="fas fa-store"></i></div>TC MARKET</a>
+    <div class="navbar-search" id="navbar-search-wrap">
+      <i class="fas fa-search search-icon"></i>
+      <input type="search" id="navbar-search" placeholder="Buscar..." aria-label="Buscar" />
+    </div>
+    <div class="navbar-actions">
+      <a href="cart.html" class="nav-icon-btn"><i class="fas fa-shopping-cart"></i><span class="badge cart-badge" style="display:none">0</span></a>
+      <div id="nav-guest" style="display:none;gap:.75rem;align-items:center"><a href="login.html" class="btn-nav btn-nav-outline">Entrar</a></div>
+      <div id="nav-user" class="user-menu" style="display:none">
+        <div class="user-avatar" id="nav-avatar" data-dropdown-toggle="user-dropdown" role="button" tabindex="0"></div>
+        <div class="dropdown-menu" id="user-dropdown">
+          <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+          <a href="orders.html"><i class="fas fa-box"></i> Mis Pedidos</a>
+          <div class="divider"></div>
+          <button data-action="logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<div id="mobile-overlay"></div>
+
+<div style="max-width:1100px;margin:0 auto;padding:var(--space-6)">
+  <nav class="breadcrumbs">
+    <a href="index.html">Inicio</a>
+    <span class="separator">/</span>
+    <span class="current">Mi Perfil</span>
+  </nav>
+
+  <!-- Profile header -->
+  <div class="profile-header animate-fade-up">
+    <div class="profile-avatar-wrap">
+      <div class="profile-avatar" id="profile-avatar-el">?</div>
+      <div class="profile-avatar-edit" onclick="document.getElementById('avatar-url-group').style.display='block'" title="Cambiar foto">
+        <i class="fas fa-camera"></i>
+      </div>
+    </div>
+    <div>
+      <h1 id="profile-name" style="font-size:1.5rem;margin-bottom:.25rem"></h1>
+      <p id="profile-email" style="margin:0;font-size:.9rem"></p>
+      <div style="margin-top:.5rem;display:flex;gap:.5rem;flex-wrap:wrap" id="profile-badges"></div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="tabs animate-fade-up">
+    <button class="tab-btn active" data-tab="info"><i class="fas fa-user"></i> Información</button>
+    <button class="tab-btn" data-tab="security"><i class="fas fa-lock"></i> Seguridad</button>
+    <button class="tab-btn" data-tab="history"><i class="fas fa-history"></i> Historial</button>
+  </div>
+
+  <!-- Info tab -->
+  <div class="tab-panel active" data-panel="info">
+    <div class="grid-2" style="gap:var(--space-6);align-items:start">
+      <div class="card animate-fade-up">
+        <div class="card-header">
+          <h3><i class="fas fa-user" style="color:var(--primary)"></i> Datos personales</h3>
+        </div>
+        <div class="card-body">
+          <form id="profile-form" novalidate>
+            <!-- Avatar URL (hidden by default) -->
+            <div class="form-group" id="avatar-url-group" style="display:none">
+              <label class="form-label">URL de foto de perfil</label>
+              <input type="url" id="prof-avatar" class="form-control" placeholder="https://ejemplo.com/foto.jpg" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Nombre completo</label>
+              <input type="text" id="prof-name" class="form-control" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Correo electrónico</label>
+              <input type="email" id="prof-email" class="form-control" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Teléfono</label>
+              <input type="tel" id="prof-phone" class="form-control" placeholder="+34 600 000 000" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Tipo de cuenta</label>
+              <select id="prof-type" class="form-control">
+                <option value="buyer">Comprador</option>
+                <option value="seller">Vendedor</option>
+              </select>
+            </div>
+
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar cambios</button>
+          </form>
+        </div>
+      </div>
+
+      <div>
+        <!-- Address -->
+        <div class="card animate-fade-up delay-100" style="margin-bottom:1rem">
+          <div class="card-header">
+            <h3><i class="fas fa-map-marker-alt" style="color:var(--secondary)"></i> Dirección de envío</h3>
+          </div>
+          <div class="card-body">
+            <div class="form-group">
+              <label class="form-label">Dirección completa</label>
+              <textarea id="prof-address" class="form-control" rows="3" placeholder="Calle, número, piso, ciudad, CP..."></textarea>
+            </div>
+            <button class="btn btn-outline btn-sm" id="save-address-btn"><i class="fas fa-save"></i> Guardar dirección</button>
+          </div>
+        </div>
+
+        <!-- Stats -->
+        <div class="card animate-fade-up delay-200">
+          <div class="card-header"><h3><i class="fas fa-chart-bar" style="color:var(--accent)"></i> Estadísticas</h3></div>
+          <div class="card-body" style="display:flex;flex-direction:column;gap:.75rem">
+            <div style="display:flex;justify-content:space-between;font-size:.875rem">
+              <span style="color:var(--text-muted)">Pedidos realizados</span>
+              <strong id="stat-orders">0</strong>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:.875rem">
+              <span style="color:var(--text-muted)">Total gastado</span>
+              <strong id="stat-spent">€0,00</strong>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:.875rem">
+              <span style="color:var(--text-muted)">Miembro desde</span>
+              <strong id="stat-member"></strong>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:.875rem">
+              <span style="color:var(--text-muted)">Tipo de cuenta</span>
+              <strong id="stat-type"></strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Security tab -->
+  <div class="tab-panel" data-panel="security">
+    <div class="card animate-fade-up" style="max-width:500px">
+      <div class="card-header">
+        <h3><i class="fas fa-key" style="color:var(--primary)"></i> Cambiar contraseña</h3>
+      </div>
+      <div class="card-body">
+        <form id="pwd-form" novalidate>
+          <div class="form-group">
+            <label class="form-label">Contraseña actual</label>
+            <input type="password" id="old-pwd" class="form-control" placeholder="Tu contraseña actual" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Nueva contraseña</label>
+            <input type="password" id="new-pwd" class="form-control" placeholder="Mínimo 6 caracteres" />
+          </div>
+          <div class="form-group">
+            <label class="form-label">Confirmar nueva contraseña</label>
+            <input type="password" id="confirm-pwd" class="form-control" placeholder="Repite la contraseña" />
+          </div>
+          <div id="pwd-error" class="invalid-feedback form-feedback" style="margin-bottom:.75rem"></div>
+          <button type="submit" class="btn btn-primary"><i class="fas fa-key"></i> Cambiar contraseña</button>
+        </form>
+
+        <div class="divider"></div>
+
+        <!-- Danger zone -->
+        <h4 style="font-size:.9rem;color:var(--danger);margin-bottom:.75rem"><i class="fas fa-exclamation-triangle"></i> Zona de peligro</h4>
+        <button class="btn btn-danger btn-sm" id="delete-account-btn"><i class="fas fa-user-times"></i> Eliminar cuenta</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- History tab -->
+  <div class="tab-panel" data-panel="history">
+    <div class="card animate-fade-up">
+      <div class="card-header">
+        <h3><i class="fas fa-history" style="color:var(--accent)"></i> Historial de compras</h3>
+        <a href="orders.html" class="btn btn-ghost btn-sm">Ver todos <i class="fas fa-arrow-right"></i></a>
+      </div>
+      <div id="purchase-history" style="padding:1rem"></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer" style="margin-top:4rem">
+  <div class="container">
+    <div class="footer-bottom">
+      <p>© 2024 TC MARKET SHOP</p>
+    </div>
+  </div>
+</footer>
+
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/store.js"></script>
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/orders.js"></script>
+<script src="js/search.js"></script>
+<script src="js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  if (!TCAuth.requireAuth()) return;
+  const user = TCAuth.getCurrentUser();
+  populateProfile(user);
+  loadStats(user);
+  loadHistory(user);
+
+  // Profile form
+  document.getElementById('profile-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const updates = {
+      name:   document.getElementById('prof-name').value.trim(),
+      email:  document.getElementById('prof-email').value.trim(),
+      phone:  document.getElementById('prof-phone').value.trim(),
+      type:   document.getElementById('prof-type').value,
+      avatar: document.getElementById('prof-avatar').value.trim(),
+    };
+    const res = TCAuth.updateUser(user.id, updates);
+    if (res.success) {
+      TCUtils.showToast('Perfil actualizado con éxito', 'success');
+      populateProfile(res.user);
+      TCApp.updateNavbar();
+    } else {
+      TCUtils.showToast(res.message, 'error');
+    }
+  });
+
+  // Address save
+  document.getElementById('save-address-btn').addEventListener('click', () => {
+    const address = document.getElementById('prof-address').value.trim();
+    const res = TCAuth.updateUser(user.id, { address });
+    if (res.success) TCUtils.showToast('Dirección guardada', 'success');
+  });
+
+  // Change password
+  document.getElementById('pwd-form').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const oldPwd  = document.getElementById('old-pwd').value;
+    const newPwd  = document.getElementById('new-pwd').value;
+    const confPwd = document.getElementById('confirm-pwd').value;
+    const errEl   = document.getElementById('pwd-error');
+
+    if (oldPwd !== user.password) { errEl.textContent = 'La contraseña actual es incorrecta.'; return; }
+    if (!TCUtils.isValidPassword(newPwd)) { errEl.textContent = 'La nueva contraseña debe tener al menos 6 caracteres.'; return; }
+    if (newPwd !== confPwd) { errEl.textContent = 'Las contraseñas no coinciden.'; return; }
+
+    const res = TCAuth.updateUser(user.id, { password: newPwd });
+    if (res.success) {
+      errEl.textContent = '';
+      document.getElementById('pwd-form').reset();
+      TCUtils.showToast('Contraseña actualizada con éxito', 'success');
+    }
+  });
+
+  // Delete account
+  document.getElementById('delete-account-btn').addEventListener('click', () => {
+    if (!confirm('¿Estás seguro de que quieres eliminar tu cuenta? Esta acción no se puede deshacer.')) return;
+    TCAuth.logout();
+  });
+});
+
+function populateProfile(user) {
+  document.getElementById('profile-name').textContent  = user.name;
+  document.getElementById('profile-email').textContent = user.email;
+  document.getElementById('prof-name').value   = user.name;
+  document.getElementById('prof-email').value  = user.email;
+  document.getElementById('prof-phone').value  = user.phone || '';
+  document.getElementById('prof-type').value   = user.type || 'buyer';
+  document.getElementById('prof-address').value= user.address || '';
+  if (user.avatar) document.getElementById('prof-avatar').value = user.avatar;
+
+  // Avatar
+  const avatarEl = document.getElementById('profile-avatar-el');
+  if (user.avatar) {
+    avatarEl.innerHTML = `<img src="${user.avatar}" alt="${user.name}" style="width:100%;height:100%;object-fit:cover">`;
+  } else {
+    avatarEl.textContent = TCAuth.getUserInitials(user);
+  }
+
+  // Badges
+  const badgesEl = document.getElementById('profile-badges');
+  badgesEl.innerHTML = `<span class="tag tag-primary">${user.type === 'seller' ? 'Vendedor' : 'Comprador'}</span>`;
+  const stores = TCStore.getStoresByUser(user.id);
+  if (stores.length) badgesEl.innerHTML += `<span class="tag tag-accent"><i class="fas fa-store"></i> ${stores[0].name}</span>`;
+}
+
+function loadStats(user) {
+  const orders = TCOrders.getOrdersByUser(user.id);
+  const spent  = orders.filter(o => o.status !== 'cancelado').reduce((s, o) => s + o.total, 0);
+  document.getElementById('stat-orders').textContent = orders.length;
+  document.getElementById('stat-spent').textContent  = TCUtils.formatCurrency(spent);
+  document.getElementById('stat-member').textContent = TCUtils.formatDate(user.createdAt, { month: 'long', year: 'numeric' });
+  document.getElementById('stat-type').textContent   = user.type === 'seller' ? 'Vendedor' : 'Comprador';
+}
+
+function loadHistory(user) {
+  const orders = TCOrders.getOrdersByUser(user.id).slice(0, 5);
+  const el = document.getElementById('purchase-history');
+  if (!orders.length) {
+    el.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:1rem">Sin compras todavía. <a href="explore.html" class="link-primary">Explorar →</a></p>';
+    return;
+  }
+  const statusLabel = s => ({ pendiente:'Pendiente', procesando:'Procesando', enviado:'Enviado', entregado:'Entregado', cancelado:'Cancelado' })[s] || s;
+  el.innerHTML = orders.map(o => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:.75rem 0;border-bottom:1px solid var(--border-light)">
+      <div>
+        <div style="font-weight:600;font-size:.875rem">Pedido #${o.id.slice(-8).toUpperCase()}</div>
+        <div style="font-size:.78rem;color:var(--text-muted)">${TCUtils.formatDate(o.createdAt)} · ${o.items.length} artículo${o.items.length!==1?'s':''}</div>
+      </div>
+      <div style="text-align:right">
+        <div style="font-weight:700">${TCUtils.formatCurrency(o.total)}</div>
+        <span class="status-badge status-${o.status}" style="font-size:.7rem">${statusLabel(o.status)}</span>
+      </div>
+    </div>
+  `).join('');
+}
+</script>
+</body>
+</html>

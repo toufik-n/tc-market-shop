@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Crea tu cuenta en TC MARKET SHOP" />
+  <title>Crear cuenta — TC MARKET SHOP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+<div class="auth-page">
+  <div class="auth-card animate-scale-in" style="max-width:500px">
+    <div class="auth-logo">
+      <a href="index.html" style="display:flex;width:56px;height:56px;background:linear-gradient(135deg,var(--primary),var(--secondary));border-radius:var(--radius-lg);align-items:center;justify-content:center;font-size:1.5rem;color:#fff;margin:0 auto var(--space-3)">
+        <i class="fas fa-store"></i>
+      </a>
+      <h2>Crear cuenta gratis</h2>
+      <p>Únete a miles de compradores y vendedores</p>
+    </div>
+
+    <form id="register-form" novalidate>
+      <div class="form-group">
+        <label class="form-label" for="name">Nombre completo</label>
+        <div style="position:relative">
+          <i class="fas fa-user" style="position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:var(--text-muted)"></i>
+          <input type="text" id="name" class="form-control" placeholder="Tu nombre" style="padding-left:2.8rem" required autocomplete="name" />
+        </div>
+        <div class="invalid-feedback form-feedback" id="name-error"></div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email">Correo electrónico</label>
+        <div style="position:relative">
+          <i class="fas fa-envelope" style="position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:var(--text-muted)"></i>
+          <input type="email" id="email" class="form-control" placeholder="tu@correo.com" style="padding-left:2.8rem" required autocomplete="email" />
+        </div>
+        <div class="invalid-feedback form-feedback" id="email-error"></div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="password">Contraseña</label>
+        <div style="position:relative">
+          <i class="fas fa-lock" style="position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:var(--text-muted)"></i>
+          <input type="password" id="password" class="form-control" placeholder="Mínimo 6 caracteres" style="padding-left:2.8rem;padding-right:3rem" required autocomplete="new-password" />
+          <button type="button" id="toggle-pwd" style="position:absolute;right:1rem;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-muted);cursor:pointer" aria-label="Ver contraseña">
+            <i class="fas fa-eye" id="pwd-icon"></i>
+          </button>
+        </div>
+        <div class="invalid-feedback form-feedback" id="password-error"></div>
+        <!-- Password strength -->
+        <div id="pwd-strength" style="display:none;margin-top:.5rem">
+          <div style="height:4px;border-radius:2px;background:var(--border);overflow:hidden">
+            <div id="pwd-strength-bar" style="height:100%;width:0%;transition:all .3s;border-radius:2px"></div>
+          </div>
+          <span id="pwd-strength-label" style="font-size:.72rem;color:var(--text-muted)"></span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="confirm-password">Confirmar contraseña</label>
+        <div style="position:relative">
+          <i class="fas fa-lock" style="position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:var(--text-muted)"></i>
+          <input type="password" id="confirm-password" class="form-control" placeholder="Repite la contraseña" style="padding-left:2.8rem" required autocomplete="new-password" />
+        </div>
+        <div class="invalid-feedback form-feedback" id="confirm-error"></div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Tipo de cuenta</label>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.75rem">
+          <label class="form-check" style="padding:1rem;border:2px solid var(--border);border-radius:var(--radius-md);cursor:pointer;margin:0;transition:border-color .2s" id="buyer-card">
+            <input type="radio" class="form-check-input" name="account-type" value="buyer" id="type-buyer" checked />
+            <div>
+              <div style="font-weight:600;display:flex;align-items:center;gap:.5rem"><i class="fas fa-shopping-bag" style="color:var(--primary)"></i> Comprador</div>
+              <div style="font-size:.75rem;color:var(--text-muted)">Compra en la plataforma</div>
+            </div>
+          </label>
+          <label class="form-check" style="padding:1rem;border:2px solid var(--border);border-radius:var(--radius-md);cursor:pointer;margin:0;transition:border-color .2s" id="seller-card">
+            <input type="radio" class="form-check-input" name="account-type" value="seller" id="type-seller" />
+            <div>
+              <div style="font-weight:600;display:flex;align-items:center;gap:.5rem"><i class="fas fa-store" style="color:var(--secondary)"></i> Vendedor</div>
+              <div style="font-size:.75rem;color:var(--text-muted)">Vende tus productos</div>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <label class="form-check" style="margin-bottom:var(--space-5)">
+        <input type="checkbox" class="form-check-input" id="terms" required />
+        <span class="form-check-label" style="font-size:.875rem">
+          Acepto los <a href="#" class="link-primary">Términos de uso</a> y la <a href="#" class="link-primary">Política de privacidad</a>
+        </span>
+      </label>
+      <div class="invalid-feedback form-feedback" id="terms-error"></div>
+
+      <div id="form-error" class="alert alert-danger" style="display:none">
+        <i class="fas fa-exclamation-circle"></i>
+        <div id="form-error-msg"></div>
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block btn-lg" id="submit-btn">
+        <span id="submit-text">Crear cuenta</span>
+        <span id="submit-loader" style="display:none"><i class="fas fa-spinner fa-spin"></i></span>
+      </button>
+    </form>
+
+    <div class="divider"></div>
+    <p style="text-align:center;font-size:.9rem;color:var(--text-muted)">
+      ¿Ya tienes cuenta? <a href="login.html" class="link-primary">Inicia sesión</a>
+    </p>
+  </div>
+</div>
+
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/store.js"></script>
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/orders.js"></script>
+<script src="js/search.js"></script>
+<script src="js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  TCAuth.redirectIfLoggedIn('dashboard.html');
+
+  // Toggle password
+  const toggleBtn = document.getElementById('toggle-pwd');
+  const pwdInput  = document.getElementById('password');
+  toggleBtn.addEventListener('click', () => {
+    const show = pwdInput.type === 'password';
+    pwdInput.type = show ? 'text' : 'password';
+    document.getElementById('pwd-icon').className = show ? 'fas fa-eye-slash' : 'fas fa-eye';
+  });
+
+  // Password strength
+  pwdInput.addEventListener('input', () => {
+    const val = pwdInput.value;
+    const strengthWrap = document.getElementById('pwd-strength');
+    const bar = document.getElementById('pwd-strength-bar');
+    const label = document.getElementById('pwd-strength-label');
+    if (!val) { strengthWrap.style.display = 'none'; return; }
+    strengthWrap.style.display = 'block';
+    let score = 0;
+    if (val.length >= 6)  score++;
+    if (val.length >= 10) score++;
+    if (/[A-Z]/.test(val)) score++;
+    if (/[0-9]/.test(val)) score++;
+    if (/[^A-Za-z0-9]/.test(val)) score++;
+    const levels = [
+      { w: '20%', color: '#E17055', text: 'Muy débil' },
+      { w: '40%', color: '#FDCB6E', text: 'Débil' },
+      { w: '60%', color: '#FDCB6E', text: 'Regular' },
+      { w: '80%', color: '#00C9A7', text: 'Fuerte' },
+      { w: '100%',color: '#00B894', text: 'Muy fuerte' },
+    ];
+    const lvl = levels[score - 1] || levels[0];
+    bar.style.width = lvl.w;
+    bar.style.background = lvl.color;
+    label.textContent = lvl.text;
+    label.style.color = lvl.color;
+  });
+
+  // Account type highlight
+  document.querySelectorAll('input[name="account-type"]').forEach(radio => {
+    radio.addEventListener('change', () => {
+      document.getElementById('buyer-card').style.borderColor  = document.getElementById('type-buyer').checked  ? 'var(--primary)' : 'var(--border)';
+      document.getElementById('seller-card').style.borderColor = document.getElementById('type-seller').checked ? 'var(--secondary)' : 'var(--border)';
+    });
+  });
+
+  // Form submit
+  document.getElementById('register-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name     = document.getElementById('name').value.trim();
+    const email    = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value;
+    const confirm  = document.getElementById('confirm-password').value;
+    const type     = document.querySelector('input[name="account-type"]:checked').value;
+    const terms    = document.getElementById('terms').checked;
+    const errorDiv = document.getElementById('form-error');
+
+    // Clear
+    document.querySelectorAll('.form-control').forEach(el => el.classList.remove('is-invalid'));
+    document.querySelectorAll('.form-feedback').forEach(el => el.textContent = '');
+    errorDiv.style.display = 'none';
+
+    let ok = true;
+    if (!name || name.length < 2) {
+      setErr('name', 'El nombre es obligatorio (mínimo 2 caracteres).'); ok = false;
+    }
+    if (!TCUtils.isValidEmail(email)) {
+      setErr('email', 'Introduce un correo electrónico válido.'); ok = false;
+    }
+    if (!TCUtils.isValidPassword(password)) {
+      setErr('password', 'La contraseña debe tener al menos 6 caracteres.'); ok = false;
+    }
+    if (password !== confirm) {
+      setErr('confirm-password', 'Las contraseñas no coinciden.'); ok = false;
+      document.getElementById('confirm-error').textContent = 'Las contraseñas no coinciden.';
+    }
+    if (!terms) {
+      document.getElementById('terms-error').textContent = 'Debes aceptar los términos.'; ok = false;
+    }
+    if (!ok) return;
+
+    document.getElementById('submit-text').style.display = 'none';
+    document.getElementById('submit-loader').style.display = 'inline-block';
+    document.getElementById('submit-btn').disabled = true;
+
+    await new Promise(r => setTimeout(r, 600));
+
+    const result = TCAuth.register(name, email, password, type);
+    if (result.success) {
+      TCUtils.showToast('¡Cuenta creada con éxito! Bienvenido/a 🎉', 'success');
+      setTimeout(() => window.location.href = 'dashboard.html', 900);
+    } else {
+      document.getElementById('form-error-msg').textContent = result.message;
+      errorDiv.style.display = 'flex';
+      document.getElementById('submit-text').style.display = 'inline-block';
+      document.getElementById('submit-loader').style.display = 'none';
+      document.getElementById('submit-btn').disabled = false;
+    }
+  });
+
+  function setErr(id, msg) {
+    const el = document.getElementById(id);
+    if (el) { el.classList.add('is-invalid'); }
+    const errEl = document.getElementById(id + '-error');
+    if (errEl) errEl.textContent = msg;
+  }
+});
+</script>
+</body>
+</html>

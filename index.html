@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="TC MARKET SHOP — Tu marketplace de confianza. Compra y vende productos de todo tipo con la mejor experiencia de usuario." />
+  <meta property="og:title"       content="TC MARKET SHOP — Tu marketplace de confianza" />
+  <meta property="og:description" content="Compra y vende productos con la mejor experiencia. Miles de productos, tiendas verificadas." />
+  <meta property="og:type"        content="website" />
+  <title>TC MARKET SHOP — Tu marketplace de confianza</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+
+<!-- ═══════════════════════ NAVBAR ═══════════════════════════ -->
+<nav class="navbar" role="navigation" aria-label="Navegación principal">
+  <div class="container">
+    <!-- Logo -->
+    <a href="index.html" class="navbar-logo" aria-label="TC MARKET SHOP inicio">
+      <div class="logo-icon" aria-hidden="true"><i class="fas fa-store"></i></div>
+      TC MARKET
+    </a>
+
+    <!-- Search -->
+    <div class="navbar-search" id="navbar-search-wrap">
+      <i class="fas fa-search search-icon" aria-hidden="true"></i>
+      <input type="search" id="navbar-search" placeholder="Buscar productos, tiendas..." aria-label="Buscar" />
+    </div>
+
+    <!-- Actions -->
+    <div class="navbar-actions">
+      <!-- Mobile search toggle -->
+      <button class="nav-icon-btn search-toggle" id="search-toggle" aria-label="Buscar" style="display:none">
+        <i class="fas fa-search"></i>
+      </button>
+
+      <!-- Explore -->
+      <a href="explore.html" class="nav-icon-btn" aria-label="Explorar productos" data-tooltip="Explorar">
+        <i class="fas fa-compass"></i>
+      </a>
+
+      <!-- Cart -->
+      <a href="cart.html" class="nav-icon-btn" aria-label="Carrito de compras">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="badge cart-badge" style="display:none">0</span>
+      </a>
+
+      <!-- Guest buttons -->
+      <div id="nav-guest" style="display:none;gap:.75rem;align-items:center">
+        <a href="login.html"    class="btn-nav btn-nav-outline">Entrar</a>
+        <a href="register.html" class="btn-nav btn-nav-fill">Registrarse</a>
+      </div>
+
+      <!-- Logged-in user -->
+      <div id="nav-user" class="user-menu" style="display:none">
+        <div class="user-avatar" id="nav-avatar" data-dropdown-toggle="user-dropdown" role="button" tabindex="0" aria-haspopup="true" aria-label="Menú de usuario"></div>
+        <div class="dropdown-menu" id="user-dropdown" role="menu">
+          <a href="profile.html"   role="menuitem"><i class="fas fa-user"></i> Mi Perfil</a>
+          <a href="orders.html"    role="menuitem"><i class="fas fa-box"></i> Mis Pedidos</a>
+          <a href="dashboard.html" role="menuitem" id="nav-seller-link" style="display:none"><i class="fas fa-chart-line"></i> Mi Tienda</a>
+          <a href="create-store.html" role="menuitem"><i class="fas fa-store"></i> Crear Tienda</a>
+          <div class="divider"></div>
+          <button data-action="logout" role="menuitem"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
+        </div>
+      </div>
+
+      <!-- Hamburger -->
+      <button class="hamburger" id="hamburger" aria-label="Menú móvil" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile overlay -->
+<div id="mobile-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:499;display:none;top:var(--navbar-h)"></div>
+
+<!-- ═══════════════════════ HERO ══════════════════════════════ -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-content animate-fade-up">
+      <div class="hero-badge"><i class="fas fa-bolt"></i> Marketplace #1 en España</div>
+      <h1>Tu marketplace<br>de <span style="color:var(--secondary)">confianza</span></h1>
+      <p>Descubre miles de productos únicos de vendedores verificados. Compra seguro, vende fácil y disfruta de la mejor experiencia de compra online.</p>
+      <div class="hero-actions">
+        <a href="explore.html" class="btn btn-primary btn-xl">
+          <i class="fas fa-compass"></i> Explorar productos
+        </a>
+        <a href="create-store.html" class="btn btn-outline btn-xl">
+          <i class="fas fa-store"></i> Vender ahora
+        </a>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <strong>+15.000</strong>
+          <span>Productos activos</span>
+        </div>
+        <div class="hero-stat">
+          <strong>+2.500</strong>
+          <span>Vendedores</span>
+        </div>
+        <div class="hero-stat">
+          <strong>4.8 ★</strong>
+          <span>Valoración media</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ CATEGORIES ═══════════════════════ -->
+<section class="section" style="background:var(--bg-white)">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Explora por categorías</h2>
+        <p class="section-subtitle">Encuentra exactamente lo que buscas</p>
+      </div>
+      <a href="explore.html" class="btn btn-outline btn-sm">Ver todas</a>
+    </div>
+    <div class="grid-6" id="categories-grid" style="display:grid;grid-template-columns:repeat(6,1fr);gap:1rem"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ FEATURED PRODUCTS ════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Productos destacados</h2>
+        <p class="section-subtitle">Lo más popular de nuestra plataforma</p>
+      </div>
+      <a href="explore.html" class="btn btn-outline btn-sm">Ver más</a>
+    </div>
+    <div class="grid-4 stagger-children" id="featured-products"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ SPECIAL OFFER ════════════════════ -->
+<section class="section" style="background:var(--bg-white)">
+  <div class="container">
+    <div class="offers-banner reveal">
+      <div style="position:relative;z-index:1">
+        <span class="tag tag-new" style="margin-bottom:1rem;display:inline-flex"><i class="fas fa-tag"></i> Oferta especial</span>
+        <h2 style="color:#fff;font-size:clamp(1.4rem,3vw,2.2rem);margin-bottom:.75rem">¡Hasta 30% de descuento<br>en electrónica!</h2>
+        <p style="color:rgba(255,255,255,.85);margin-bottom:1.5rem">Válido durante esta semana. No te pierdas las mejores ofertas en tecnología.</p>
+        <a href="explore.html?category=Electrónica" class="btn btn-xl" style="background:#fff;color:var(--primary);font-weight:700">
+          <i class="fas fa-bolt"></i> Aprovechar oferta
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ STORES ═══════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Tiendas destacadas</h2>
+        <p class="section-subtitle">Vendedores verificados y de confianza</p>
+      </div>
+    </div>
+    <div class="grid-3 stagger-children" id="featured-stores"></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ WHY SELL ════════════════════════ -->
+<section class="section" style="background:var(--bg-white)">
+  <div class="container">
+    <div class="text-center" style="margin-bottom:var(--space-10)">
+      <h2 class="section-title">¿Por qué vender en TC MARKET SHOP?</h2>
+      <p class="section-subtitle">La plataforma más sencilla para empezar tu negocio online</p>
+    </div>
+    <div class="grid-4 stagger-children">
+      <div class="benefit-card reveal">
+        <div class="benefit-icon" style="background:#EAE9FF"><i class="fas fa-rocket" style="color:var(--primary)"></i></div>
+        <h3>Empieza gratis</h3>
+        <p>Crea tu tienda sin comisiones los primeros 3 meses. Sin costes ocultos.</p>
+      </div>
+      <div class="benefit-card reveal delay-100">
+        <div class="benefit-icon" style="background:#FFE8EE"><i class="fas fa-shield-alt" style="color:var(--secondary)"></i></div>
+        <h3>Pagos seguros</h3>
+        <p>Protección total del vendedor y comprador en cada transacción.</p>
+      </div>
+      <div class="benefit-card reveal delay-200">
+        <div class="benefit-icon" style="background:#D4F9F3"><i class="fas fa-chart-line" style="color:var(--accent)"></i></div>
+        <h3>Estadísticas en tiempo real</h3>
+        <p>Panel de control completo con métricas, ventas y rendimiento.</p>
+      </div>
+      <div class="benefit-card reveal delay-300">
+        <div class="benefit-icon" style="background:#FFF5DC"><i class="fas fa-headset" style="color:#B7860C"></i></div>
+        <h3>Soporte 24/7</h3>
+        <p>Equipo de soporte dedicado listo para ayudarte en todo momento.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ FOOTER ═══════════════════════════ -->
+<footer class="footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <div class="logo-icon" aria-hidden="true"><i class="fas fa-store"></i></div>
+          TC MARKET SHOP
+        </div>
+        <p class="footer-desc">Tu marketplace de confianza. Compra y vende productos únicos con la seguridad que mereces.</p>
+        <div class="footer-social">
+          <a href="#" class="social-btn" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social-btn" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-btn" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-btn" aria-label="TikTok"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Comprar</h4>
+        <ul>
+          <li><a href="explore.html">Explorar productos</a></li>
+          <li><a href="explore.html?category=Electrónica">Electrónica</a></li>
+          <li><a href="explore.html?category=Moda">Moda</a></li>
+          <li><a href="explore.html?category=Hogar">Hogar</a></li>
+          <li><a href="cart.html">Mi carrito</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Vender</h4>
+        <ul>
+          <li><a href="create-store.html">Crear mi tienda</a></li>
+          <li><a href="dashboard.html">Panel de vendedor</a></li>
+          <li><a href="add-product.html">Añadir producto</a></li>
+          <li><a href="#">Guía del vendedor</a></li>
+          <li><a href="#">Tarifas</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Ayuda</h4>
+        <ul>
+          <li><a href="#">Centro de ayuda</a></li>
+          <li><a href="#">Política de devoluciones</a></li>
+          <li><a href="#">Privacidad</a></li>
+          <li><a href="#">Términos de uso</a></li>
+          <li><a href="#">Contacto</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 TC MARKET SHOP. Todos los derechos reservados.</p>
+      <p>Hecho con <i class="fas fa-heart" style="color:var(--secondary)"></i> en España</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Toast container -->
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+<!-- Scripts -->
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/store.js"></script>
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/orders.js"></script>
+<script src="js/search.js"></script>
+<script src="js/app.js"></script>
+<script>
+/* ── Index page logic ─────────────────────────────────────── */
+const CATEGORIES = [
+  { name: 'Electrónica', icon: 'fa-laptop',        color: '#6C63FF', bg: '#EAE9FF', count: '6 productos' },
+  { name: 'Moda',        icon: 'fa-tshirt',        color: '#FF6584', bg: '#FFE8EE', count: '5 productos' },
+  { name: 'Hogar',       icon: 'fa-couch',         color: '#00C9A7', bg: '#D4F9F3', count: '4 productos' },
+  { name: 'Deportes',    icon: 'fa-dumbbell',      color: '#FDCB6E', bg: '#FFF5DC', count: '0 productos' },
+  { name: 'Libros',      icon: 'fa-book',          color: '#E17055', bg: '#FFEAEA', count: '0 productos' },
+  { name: 'Juguetes',    icon: 'fa-puzzle-piece',  color: '#74B9FF', bg: '#EAF4FF', count: '0 productos' },
+];
+
+function renderCategories() {
+  const grid = document.getElementById('categories-grid');
+  if (!grid) return;
+  grid.innerHTML = CATEGORIES.map(c => `
+    <a href="explore.html?category=${encodeURIComponent(c.name)}" class="category-card hover-lift">
+      <div class="category-icon" style="background:${c.bg}">
+        <i class="fas ${c.icon}" style="color:${c.color}"></i>
+      </div>
+      <h3>${c.name}</h3>
+      <p>${c.count}</p>
+    </a>
+  `).join('');
+}
+
+function renderFeaturedProducts() {
+  const grid = document.getElementById('featured-products');
+  if (!grid) return;
+  const products = TCProducts.getFeaturedProducts(8);
+  if (products.length === 0) {
+    grid.innerHTML = '<p style="color:var(--text-muted)">No hay productos destacados.</p>';
+    return;
+  }
+  grid.innerHTML = products.map(p => {
+    const discount = TCProducts.getDiscount(p);
+    const price    = TCProducts.getEffectivePrice(p);
+    return `
+      <div class="product-card">
+        <div class="product-card-img-wrap">
+          <img src="${p.image}" alt="${p.name}" class="product-card-image" loading="lazy" />
+          ${discount ? `<div class="product-card-tag"><span class="tag tag-sale">-${discount}%</span></div>` : ''}
+          <div class="product-card-actions">
+            <button class="product-card-action-btn" onclick="quickAddCart('${p.id}')" aria-label="Añadir al carrito">
+              <i class="fas fa-shopping-cart"></i>
+            </button>
+            <a href="product-detail.html?id=${p.id}" class="product-card-action-btn" aria-label="Ver detalle">
+              <i class="fas fa-eye"></i>
+            </a>
+          </div>
+        </div>
+        <div class="product-card-body">
+          <div class="product-card-category">${p.category}</div>
+          <h3 class="product-card-name"><a href="product-detail.html?id=${p.id}">${p.name}</a></h3>
+          <div class="product-card-price">
+            <span class="price-current">${TCUtils.formatCurrency(price)}</span>
+            ${p.salePrice ? `<span class="price-original">${TCUtils.formatCurrency(p.price)}</span>` : ''}
+          </div>
+          <div class="rating">
+            ${TCUtils.renderStars(p.rating)}
+            <span class="count">(${p.reviews})</span>
+          </div>
+        </div>
+        <div class="product-card-footer">
+          <button class="btn btn-primary btn-sm btn-block" onclick="quickAddCart('${p.id}')">
+            <i class="fas fa-cart-plus"></i> Añadir al carrito
+          </button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function renderFeaturedStores() {
+  const grid = document.getElementById('featured-stores');
+  if (!grid) return;
+  const stores = TCStore.getAllStores().slice(0, 3);
+  grid.innerHTML = stores.map(s => `
+    <a href="store-view.html?id=${s.id}" class="store-card" style="display:block">
+      <div class="store-card-banner" style="background:linear-gradient(135deg,${s.color},#888)">
+        ${s.banner ? `<img src="${s.banner}" alt="${s.name}" style="width:100%;height:100%;object-fit:cover">` : ''}
+        <div class="store-card-logo">
+          <img src="${s.logo}" alt="${s.name} logo" />
+        </div>
+      </div>
+      <div class="store-card-body">
+        <h3 class="store-card-name">${s.name}</h3>
+        <p class="store-card-info" style="margin-bottom:.5rem">${TCUtils.truncate(s.description, 80)}</p>
+        <div style="display:flex;gap:.75rem;font-size:.8rem;color:var(--text-muted)">
+          <span><i class="fas fa-star" style="color:#FDCB6E"></i> ${s.rating || '—'}</span>
+          <span><i class="fas fa-box"></i> ${s.totalProducts} productos</span>
+          <span><i class="fas fa-tag"></i> ${s.category}</span>
+        </div>
+      </div>
+    </a>
+  `).join('');
+}
+
+function quickAddCart(productId) {
+  const res = TCCart.addToCart(productId, 1);
+  if (res.success) {
+    TCUtils.showToast('Producto añadido al carrito', 'success');
+    // Bounce cart icon
+    document.querySelectorAll('.cart-badge').forEach(el => el.classList.add('badge-new'));
+  } else {
+    TCUtils.showToast(res.message, 'error');
+  }
+}
+
+// Run on page ready
+document.addEventListener('DOMContentLoaded', () => {
+  renderCategories();
+  renderFeaturedProducts();
+  renderFeaturedStores();
+});
+</script>
+</body>
+</html>

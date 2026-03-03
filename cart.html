@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Tu carrito de compras en TC MARKET SHOP" />
+  <title>Carrito — TC MARKET SHOP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="navbar-logo"><div class="logo-icon"><i class="fas fa-store"></i></div>TC MARKET</a>
+    <div class="navbar-search" id="navbar-search-wrap">
+      <i class="fas fa-search search-icon"></i>
+      <input type="search" id="navbar-search" placeholder="Buscar..." aria-label="Buscar" />
+    </div>
+    <div class="navbar-actions">
+      <a href="cart.html" class="nav-icon-btn" aria-label="Carrito">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="badge cart-badge" style="display:none">0</span>
+      </a>
+      <div id="nav-guest" style="display:none;gap:.75rem;align-items:center">
+        <a href="login.html" class="btn-nav btn-nav-outline">Entrar</a>
+        <a href="register.html" class="btn-nav btn-nav-fill">Registrarse</a>
+      </div>
+      <div id="nav-user" class="user-menu" style="display:none">
+        <div class="user-avatar" id="nav-avatar" data-dropdown-toggle="user-dropdown" role="button" tabindex="0"></div>
+        <div class="dropdown-menu" id="user-dropdown">
+          <a href="profile.html"><i class="fas fa-user"></i> Mi Perfil</a>
+          <a href="orders.html"><i class="fas fa-box"></i> Mis Pedidos</a>
+          <div class="divider"></div>
+          <button data-action="logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<div id="mobile-overlay"></div>
+
+<div style="max-width:1200px;margin:0 auto;padding:var(--space-6) var(--space-6)">
+  <nav class="breadcrumbs">
+    <a href="index.html">Inicio</a>
+    <span class="separator">/</span>
+    <span class="current">Carrito</span>
+  </nav>
+  <div class="page-header animate-fade-up">
+    <h1>Mi carrito <span id="cart-count-title" style="font-size:1rem;color:var(--text-muted);font-weight:400"></span></h1>
+  </div>
+
+  <!-- Empty state -->
+  <div id="cart-empty" style="display:none">
+    <div class="empty-state">
+      <div class="empty-icon"><i class="fas fa-shopping-cart"></i></div>
+      <h3>Tu carrito está vacío</h3>
+      <p>Añade productos para empezar a comprar.</p>
+      <a href="explore.html" class="btn btn-primary btn-lg"><i class="fas fa-compass"></i> Explorar productos</a>
+    </div>
+  </div>
+
+  <!-- Cart content -->
+  <div id="cart-content" style="display:none">
+    <div style="display:grid;grid-template-columns:1fr 360px;gap:var(--space-6);align-items:start">
+      <!-- Items -->
+      <div>
+        <div class="card" style="margin-bottom:var(--space-4)">
+          <div class="card-header">
+            <h3 style="font-size:1rem">Productos en el carrito</h3>
+            <button class="btn btn-ghost btn-sm" id="clear-cart-btn"><i class="fas fa-trash"></i> Vaciar carrito</button>
+          </div>
+          <div id="cart-items"></div>
+        </div>
+
+        <!-- Recommended -->
+        <div class="card">
+          <div class="card-header">
+            <h3 style="font-size:1rem"><i class="fas fa-star" style="color:#FDCB6E"></i> También te puede gustar</h3>
+          </div>
+          <div class="card-body">
+            <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1rem" id="recommended"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Summary -->
+      <div style="position:sticky;top:calc(var(--navbar-h) + 1rem)">
+        <div class="order-summary-card">
+          <div class="order-summary-header">
+            <h3 style="font-size:1rem;font-weight:600">Resumen del pedido</h3>
+          </div>
+          <div class="order-summary-body">
+            <div class="summary-row"><span>Subtotal</span><span id="sum-subtotal">€0,00</span></div>
+            <div class="summary-row" id="sum-discount-row" style="display:none;color:var(--success)">
+              <span>Descuento</span><span id="sum-discount">-€0,00</span>
+            </div>
+            <div class="summary-row"><span>Envío</span><span id="sum-shipping">Calculando...</span></div>
+            <div class="summary-row"><span>IVA (21%)</span><span id="sum-tax">€0,00</span></div>
+            <div class="summary-row total"><span>Total</span><span id="sum-total">€0,00</span></div>
+
+            <!-- Discount code -->
+            <div style="margin:1rem 0">
+              <div class="discount-input-wrap">
+                <input type="text" id="discount-code" class="form-control" placeholder="Código de descuento" style="border-radius:var(--radius-md) 0 0 var(--radius-md)!important" />
+                <button class="btn btn-outline" id="apply-discount" style="border-radius:0 var(--radius-md) var(--radius-md) 0">Aplicar</button>
+              </div>
+              <div id="discount-msg" style="font-size:.78rem;margin-top:.4rem"></div>
+            </div>
+
+            <div style="font-size:.75rem;color:var(--text-muted);margin-bottom:.75rem;display:flex;gap:.5rem">
+              <i class="fas fa-info-circle"></i> Códigos: BIENVENIDO10, VERANO20, TECH15
+            </div>
+
+            <a href="checkout.html" class="btn btn-primary btn-block btn-lg" id="checkout-btn">
+              <i class="fas fa-lock"></i> Proceder al pago
+            </a>
+            <a href="explore.html" class="btn btn-ghost btn-block" style="margin-top:.5rem;justify-content:center">
+              <i class="fas fa-arrow-left"></i> Continuar comprando
+            </a>
+          </div>
+        </div>
+
+        <!-- Trust badges -->
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:1rem">
+          <div style="display:flex;align-items:center;gap:.4rem;font-size:.75rem;color:var(--text-muted)"><i class="fas fa-lock" style="color:var(--success)"></i>Pago seguro</div>
+          <div style="display:flex;align-items:center;gap:.4rem;font-size:.75rem;color:var(--text-muted)"><i class="fas fa-truck" style="color:var(--accent)"></i>Envío rápido</div>
+          <div style="display:flex;align-items:center;gap:.4rem;font-size:.75rem;color:var(--text-muted)"><i class="fas fa-undo" style="color:var(--primary)"></i>30 días devolución</div>
+          <div style="display:flex;align-items:center;gap:.4rem;font-size:.75rem;color:var(--text-muted)"><i class="fas fa-headset" style="color:var(--secondary)"></i>Soporte 24/7</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer" style="margin-top:4rem">
+  <div class="container">
+    <div class="footer-bottom">
+      <p>© 2024 TC MARKET SHOP</p>
+      <p><a href="index.html" style="color:rgba(255,255,255,.6)">Inicio</a></p>
+    </div>
+  </div>
+</footer>
+
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/store.js"></script>
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/orders.js"></script>
+<script src="js/search.js"></script>
+<script src="js/app.js"></script>
+<script>
+let appliedCode = '';
+
+document.addEventListener('DOMContentLoaded', () => {
+  renderCart();
+
+  document.getElementById('clear-cart-btn').addEventListener('click', () => {
+    if (confirm('¿Vaciar el carrito?')) { TCCart.clearCart(); renderCart(); }
+  });
+
+  document.getElementById('apply-discount').addEventListener('click', () => {
+    const code = document.getElementById('discount-code').value.trim();
+    const validCodes = { 'BIENVENIDO10': 10, 'VERANO20': 20, 'TECH15': 15 };
+    const msgEl = document.getElementById('discount-msg');
+    if (validCodes[code.toUpperCase()]) {
+      appliedCode = code;
+      msgEl.innerHTML = `<span style="color:var(--success)"><i class="fas fa-check-circle"></i> ¡Descuento del ${validCodes[code.toUpperCase()]}% aplicado!</span>`;
+      updateSummary();
+    } else {
+      msgEl.innerHTML = `<span style="color:var(--danger)"><i class="fas fa-times-circle"></i> Código no válido.</span>`;
+    }
+  });
+});
+
+function renderCart() {
+  const items = TCCart.getCartItems();
+  const countEl = document.getElementById('cart-count-title');
+  countEl.textContent = items.length ? `(${items.length} artículo${items.length !== 1 ? 's' : ''})` : '';
+
+  if (!items.length) {
+    document.getElementById('cart-empty').style.display   = 'block';
+    document.getElementById('cart-content').style.display = 'none';
+    return;
+  }
+
+  document.getElementById('cart-empty').style.display   = 'none';
+  document.getElementById('cart-content').style.display = 'block';
+
+  // Render items
+  const itemsEl = document.getElementById('cart-items');
+  itemsEl.innerHTML = items.map(item => `
+    <div class="cart-item" id="ci-${item.productId}">
+      <img src="${item.image}" alt="${item.name}" class="cart-item-image" />
+      <div class="cart-item-info">
+        <a href="product-detail.html?id=${item.productId}" class="cart-item-name">${item.name}</a>
+        <div class="cart-item-store">${item.storeName}</div>
+        <div style="font-weight:700;color:var(--primary);margin-top:.25rem">${TCUtils.formatCurrency(item.price)}</div>
+      </div>
+      <div class="qty-control" style="margin:0 .5rem">
+        <button class="qty-btn" onclick="changeQty('${item.productId}', ${item.qty - 1})">−</button>
+        <span class="qty-value">${item.qty}</span>
+        <button class="qty-btn" onclick="changeQty('${item.productId}', ${item.qty + 1})">+</button>
+      </div>
+      <div style="text-align:right;min-width:80px">
+        <div style="font-weight:700">${TCUtils.formatCurrency(item.price * item.qty)}</div>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="removeItem('${item.productId}')" aria-label="Eliminar">
+        <i class="fas fa-times" style="color:var(--danger)"></i>
+      </button>
+    </div>
+  `).join('');
+
+  updateSummary();
+  renderRecommended();
+}
+
+function updateSummary() {
+  const totals = TCCart.calculateTotals(appliedCode);
+  document.getElementById('sum-subtotal').textContent  = TCUtils.formatCurrency(totals.subtotal);
+  document.getElementById('sum-tax').textContent       = TCUtils.formatCurrency(totals.tax);
+  document.getElementById('sum-total').textContent     = TCUtils.formatCurrency(totals.total);
+  document.getElementById('sum-shipping').textContent  = totals.shipping === 0 ? '<span style="color:var(--success)">Gratis</span>' : TCUtils.formatCurrency(totals.shipping);
+  document.getElementById('sum-shipping').innerHTML    = totals.shipping === 0 ? '<span style="color:var(--success)">Gratis</span>' : TCUtils.formatCurrency(totals.shipping);
+
+  const discRow = document.getElementById('sum-discount-row');
+  if (totals.discountAmount > 0) {
+    discRow.style.display = 'flex';
+    document.getElementById('sum-discount').textContent = `-${TCUtils.formatCurrency(totals.discountAmount)}`;
+  } else {
+    discRow.style.display = 'none';
+  }
+
+  // Store code for checkout
+  sessionStorage.setItem('tc_discount_code', appliedCode);
+}
+
+function changeQty(productId, newQty) {
+  TCCart.updateQty(productId, newQty);
+  renderCart();
+}
+
+function removeItem(productId) {
+  TCCart.removeFromCart(productId);
+  renderCart();
+  TCUtils.showToast('Producto eliminado del carrito', 'info');
+}
+
+function renderRecommended() {
+  const products = TCProducts.getFeaturedProducts(3);
+  const grid = document.getElementById('recommended');
+  grid.innerHTML = products.map(p => `
+    <a href="product-detail.html?id=${p.id}" class="product-card" style="display:block">
+      <div class="product-card-img-wrap">
+        <img src="${p.image}" alt="${p.name}" class="product-card-image" loading="lazy" />
+      </div>
+      <div class="product-card-body" style="padding:.75rem">
+        <div class="product-card-name" style="font-size:.8rem">${p.name}</div>
+        <div class="price-current" style="font-size:.875rem">${TCUtils.formatCurrency(TCProducts.getEffectivePrice(p))}</div>
+      </div>
+    </a>
+  `).join('');
+}
+</script>
+</body>
+</html>
