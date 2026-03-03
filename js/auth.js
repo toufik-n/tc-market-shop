@@ -1,6 +1,11 @@
 /**
  * TC MARKET SHOP - Authentication
  * Login, register, logout, session management
+ *
+ * ⚠️  DEMO ONLY: Passwords are stored and compared in plain text in
+ * localStorage.  In a real application, passwords must be hashed
+ * server-side (e.g. bcrypt/argon2) and authentication must occur via
+ * a secure backend API — never trust client-side credential checks.
  */
 
 'use strict';

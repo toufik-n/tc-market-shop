@@ -1,5 +1,12 @@
 /**
  * TC MARKET SHOP - Orders Management
+ *
+ * ⚠️  DEMO ONLY: Card numbers are stored only as the last 4 digits for
+ * display purposes; no real payment is processed here.  In a
+ * production application all card data must be handled exclusively by
+ * a PCI-DSS-compliant payment gateway (e.g. Stripe, PayPal) using
+ * tokenisation — card numbers must never be stored or transmitted
+ * through your own servers.
  */
 
 'use strict';
