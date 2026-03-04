@@ -6,21 +6,29 @@
 
 ## 🌐 Ver la página online (GitHub Pages)
 
-Una vez que el repositorio tenga **GitHub Pages** activado, la página estará disponible en:
+La página está disponible en:
 
 ```
 https://toufik-n.github.io/tc-market-shop/
 ```
 
-### ¿Cómo activar GitHub Pages?
+### Pasos para activarlo (solo la primera vez)
 
-1. Ve a tu repositorio en GitHub: `https://github.com/toufik-n/tc-market-shop`
-2. Haz clic en **Settings** (Configuración)
-3. En el menú lateral izquierdo, selecciona **Pages**
-4. En **Source**, selecciona **GitHub Actions**
-5. ¡Listo! Cada vez que hagas un `push` a `main`, el sitio se desplegará automáticamente
+El workflow `.github/workflows/deploy.yml` crea automáticamente una rama `gh-pages` con el sitio. Solo necesitas indicarle a GitHub que use esa rama:
 
-> ℹ️ El workflow `.github/workflows/deploy.yml` ya está configurado para desplegar automáticamente.
+1. **Fusiona (merge) este PR** en la rama `main`  
+   → El workflow se ejecuta y crea la rama `gh-pages` automáticamente.
+
+2. **Activa GitHub Pages** en la configuración:
+   - Ve a: `https://github.com/toufik-n/tc-market-shop/settings/pages`
+   - En **"Build and deployment"** → **Source** → selecciona **"Deploy from a branch"**
+   - En **Branch** → selecciona **`gh-pages`** → carpeta **`/ (root)`**
+   - Haz clic en **Save**
+
+3. **Espera 1-2 minutos** y abre: `https://toufik-n.github.io/tc-market-shop/`
+
+> ⚠️ **Si ves error 404** es porque GitHub Pages no está activado aún. Sigue los pasos 1 y 2.  
+> ✅ Una vez activado, cada `push` a `main` actualizará el sitio automáticamente.
 
 ---
 
