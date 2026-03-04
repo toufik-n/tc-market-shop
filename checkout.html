@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Finalizar compra en TC MARKET SHOP" />
+  <title>Finalizar Compra — TC MARKET SHOP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="navbar-logo"><div class="logo-icon"><i class="fas fa-store"></i></div>TC MARKET</a>
+    <div class="navbar-actions">
+      <a href="cart.html" class="nav-icon-btn"><i class="fas fa-shopping-cart"></i><span class="badge cart-badge" style="display:none">0</span></a>
+      <div id="nav-guest" style="display:none;gap:.75rem;align-items:center"><a href="login.html" class="btn-nav btn-nav-outline">Entrar</a></div>
+      <div id="nav-user" class="user-menu" style="display:none">
+        <div class="user-avatar" id="nav-avatar" data-dropdown-toggle="user-dropdown" role="button" tabindex="0"></div>
+        <div class="dropdown-menu" id="user-dropdown">
+          <a href="orders.html"><i class="fas fa-box"></i> Mis Pedidos</a>
+          <div class="divider"></div>
+          <button data-action="logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<div id="mobile-overlay"></div>
+
+<div style="max-width:1100px;margin:0 auto;padding:var(--space-6)">
+  <!-- Steps -->
+  <div class="checkout-steps animate-fade-up" style="margin-bottom:var(--space-8)">
+    <div class="checkout-step done" id="step1">
+      <div class="step-num"><i class="fas fa-check" style="font-size:.65rem"></i></div>
+      <span class="step-label">Carrito</span>
+    </div>
+    <div class="step-connector done"></div>
+    <div class="checkout-step active" id="step2">
+      <div class="step-num">2</div>
+      <span class="step-label">Envío</span>
+    </div>
+    <div class="step-connector" id="conn2"></div>
+    <div class="checkout-step" id="step3">
+      <div class="step-num">3</div>
+      <span class="step-label">Pago</span>
+    </div>
+    <div class="step-connector" id="conn3"></div>
+    <div class="checkout-step" id="step4">
+      <div class="step-num">4</div>
+      <span class="step-label">Confirmación</span>
+    </div>
+  </div>
+
+  <!-- Empty cart redirect -->
+  <div id="empty-cart-msg" style="display:none">
+    <div class="empty-state">
+      <div class="empty-icon"><i class="fas fa-shopping-cart"></i></div>
+      <h3>Tu carrito está vacío</h3>
+      <a href="explore.html" class="btn btn-primary">Explorar productos</a>
+    </div>
+  </div>
+
+  <div id="checkout-content" style="display:none">
+    <div style="display:grid;grid-template-columns:1fr 380px;gap:var(--space-6);align-items:start">
+      <!-- Left: forms -->
+      <div>
+        <!-- Section 1: Shipping -->
+        <div class="card animate-fade-up" style="margin-bottom:var(--space-4)" id="shipping-section">
+          <div class="card-header">
+            <h3><i class="fas fa-map-marker-alt" style="color:var(--primary)"></i> Dirección de envío</h3>
+          </div>
+          <div class="card-body">
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="form-label">Nombre completo *</label>
+                <input type="text" id="sh-name" class="form-control" placeholder="Tu nombre" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Teléfono *</label>
+                <input type="tel" id="sh-phone" class="form-control" placeholder="+34 600 000 000" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Dirección *</label>
+              <input type="text" id="sh-address" class="form-control" placeholder="Calle, número, piso..." required />
+            </div>
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="form-label">Ciudad *</label>
+                <input type="text" id="sh-city" class="form-control" placeholder="Madrid" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label">Código Postal *</label>
+                <input type="text" id="sh-zip" class="form-control" placeholder="28001" maxlength="5" />
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Notas del pedido</label>
+              <textarea id="sh-notes" class="form-control" rows="2" placeholder="Instrucciones especiales..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- Section 2: Shipping method -->
+        <div class="card animate-fade-up delay-100" style="margin-bottom:var(--space-4)">
+          <div class="card-header">
+            <h3><i class="fas fa-truck" style="color:var(--accent)"></i> Método de envío</h3>
+          </div>
+          <div class="card-body" style="display:flex;flex-direction:column;gap:.75rem">
+            <label class="form-check" style="padding:1rem;border:2px solid var(--border);border-radius:var(--radius-md);cursor:pointer;margin:0;transition:border-color .2s" id="std-card">
+              <input type="radio" name="shipping-method" value="standard" class="form-check-input" id="ship-std" checked />
+              <div style="flex:1">
+                <div style="font-weight:600;display:flex;justify-content:space-between"><span><i class="fas fa-box" style="color:var(--primary)"></i> Estándar (5-7 días)</span><span id="std-price">€4,95</span></div>
+                <div style="font-size:.8rem;color:var(--text-muted)">Entrega en 5-7 días laborables</div>
+              </div>
+            </label>
+            <label class="form-check" style="padding:1rem;border:2px solid var(--border);border-radius:var(--radius-md);cursor:pointer;margin:0;transition:border-color .2s" id="exp-card">
+              <input type="radio" name="shipping-method" value="express" class="form-check-input" id="ship-exp" />
+              <div style="flex:1">
+                <div style="font-weight:600;display:flex;justify-content:space-between"><span><i class="fas fa-bolt" style="color:var(--secondary)"></i> Express (1-2 días)</span><span>€9,95</span></div>
+                <div style="font-size:.8rem;color:var(--text-muted)">Entrega garantizada en 1-2 días</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Section 3: Payment -->
+        <div class="card animate-fade-up delay-200">
+          <div class="card-header">
+            <h3><i class="fas fa-credit-card" style="color:var(--secondary)"></i> Información de pago</h3>
+          </div>
+          <div class="card-body">
+            <!-- Card preview -->
+            <div class="card-preview" id="card-preview">
+              <div style="display:flex;justify-content:space-between;align-items:center">
+                <i class="fab fa-cc-visa" style="font-size:2rem"></i>
+                <i class="fas fa-wifi" style="transform:rotate(90deg);opacity:.6"></i>
+              </div>
+              <div class="card-preview-number" id="prev-number">•••• •••• •••• ••••</div>
+              <div class="card-preview-footer">
+                <div><div style="font-size:.65rem;opacity:.7;margin-bottom:2px">TITULAR</div><span id="prev-name">TU NOMBRE</span></div>
+                <div><div style="font-size:.65rem;opacity:.7;margin-bottom:2px">VENCE</div><span id="prev-expiry">MM/AA</span></div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Número de tarjeta *</label>
+              <input type="text" id="card-number" class="form-control" placeholder="1234 5678 9012 3456" maxlength="19" inputmode="numeric" />
+            </div>
+            <div class="form-group">
+              <label class="form-label">Titular de la tarjeta *</label>
+              <input type="text" id="card-name" class="form-control" placeholder="NOMBRE APELLIDO" style="text-transform:uppercase" />
+            </div>
+            <div class="grid-2">
+              <div class="form-group">
+                <label class="form-label">Fecha de vencimiento *</label>
+                <input type="text" id="card-expiry" class="form-control" placeholder="MM/AA" maxlength="5" />
+              </div>
+              <div class="form-group">
+                <label class="form-label">CVV *</label>
+                <input type="text" id="card-cvv" class="form-control" placeholder="•••" maxlength="4" inputmode="numeric" />
+              </div>
+            </div>
+
+            <div class="alert alert-info" style="font-size:.8rem">
+              <i class="fas fa-lock"></i>
+              <div>Pago seguro con cifrado SSL de 256 bits. Tus datos están protegidos.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Order summary -->
+      <div style="position:sticky;top:calc(var(--navbar-h) + 1rem)">
+        <div class="order-summary-card">
+          <div class="order-summary-header">
+            <h3 style="font-size:1rem;font-weight:600">Resumen del pedido</h3>
+          </div>
+          <div class="order-summary-body">
+            <div id="checkout-items" style="margin-bottom:1rem"></div>
+            <div class="divider"></div>
+            <div class="summary-row"><span>Subtotal</span><span id="ck-subtotal">€0,00</span></div>
+            <div class="summary-row" id="ck-discount-row" style="display:none;color:var(--success)">
+              <span>Descuento</span><span id="ck-discount"></span>
+            </div>
+            <div class="summary-row"><span>Envío</span><span id="ck-shipping">€4,95</span></div>
+            <div class="summary-row"><span>IVA (21%)</span><span id="ck-tax">€0,00</span></div>
+            <div class="summary-row total"><span>Total</span><span id="ck-total">€0,00</span></div>
+
+            <button class="btn btn-primary btn-block btn-lg" id="place-order-btn" style="margin-top:1rem">
+              <i class="fas fa-lock"></i> Confirmar pedido
+            </button>
+            <a href="cart.html" class="btn btn-ghost btn-block" style="margin-top:.5rem;justify-content:center">
+              <i class="fas fa-arrow-left"></i> Volver al carrito
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation -->
+  <div id="order-confirmation" style="display:none">
+    <div class="empty-state animate-scale-in">
+      <div style="width:80px;height:80px;border-radius:50%;background:var(--success);display:flex;align-items:center;justify-content:center;margin:0 auto var(--space-5);animation:pulse 1s 3">
+        <i class="fas fa-check" style="color:#fff;font-size:2rem"></i>
+      </div>
+      <h2>¡Pedido realizado con éxito!</h2>
+      <p>Tu pedido ha sido confirmado. Recibirás un email con los detalles.</p>
+      <p id="order-id-display" style="font-family:var(--font-title);font-weight:700;color:var(--primary);font-size:1.1rem;margin-bottom:1.5rem"></p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+        <a href="orders.html" class="btn btn-primary"><i class="fas fa-box"></i> Ver mis pedidos</a>
+        <a href="explore.html" class="btn btn-outline"><i class="fas fa-compass"></i> Seguir comprando</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/store.js"></script>
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/orders.js"></script>
+<script src="js/search.js"></script>
+<script src="js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const items = TCCart.getCartItems();
+  if (!items.length) { document.getElementById('empty-cart-msg').style.display = 'block'; return; }
+  document.getElementById('checkout-content').style.display = 'block';
+
+  const user = TCAuth.getCurrentUser();
+  const discountCode = sessionStorage.getItem('tc_discount_code') || '';
+
+  // Pre-fill shipping with user data
+  if (user) {
+    document.getElementById('sh-name').value = user.name;
+    document.getElementById('sh-address').value = user.address || '';
+  }
+
+  // Render order summary
+  const itemsEl = document.getElementById('checkout-items');
+  itemsEl.innerHTML = items.map(i => `
+    <div style="display:flex;gap:.75rem;margin-bottom:.75rem;align-items:center">
+      <img src="${i.image}" alt="${i.name}" style="width:48px;height:48px;object-fit:cover;border-radius:var(--radius-sm);flex-shrink:0" />
+      <div style="flex:1;min-width:0">
+        <div style="font-size:.85rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${i.name}</div>
+        <div style="font-size:.75rem;color:var(--text-muted)">x${i.qty}</div>
+      </div>
+      <div style="font-weight:600;font-size:.875rem;flex-shrink:0">${TCUtils.formatCurrency(i.price * i.qty)}</div>
+    </div>
+  `).join('');
+
+  updateTotals();
+
+  // Shipping method change
+  document.querySelectorAll('input[name="shipping-method"]').forEach(radio => {
+    radio.addEventListener('change', updateTotals);
+  });
+
+  // Card preview live update
+  document.getElementById('card-number').addEventListener('input', function() {
+    let val = this.value.replace(/\D/g, '').slice(0,16);
+    this.value = val.replace(/(\d{4})/g, '$1 ').trim();
+    document.getElementById('prev-number').textContent = this.value.padEnd(19, '•').replace(/[0-9]/g, (c, i) => i < this.value.replace(/\s/g,'').length - 4 ? '•' : c) || '•••• •••• •••• ••••';
+    document.getElementById('prev-number').textContent = this.value || '•••• •••• •••• ••••';
+  });
+  document.getElementById('card-name').addEventListener('input', function() {
+    document.getElementById('prev-name').textContent = this.value.toUpperCase() || 'TU NOMBRE';
+  });
+  document.getElementById('card-expiry').addEventListener('input', function() {
+    let val = this.value.replace(/\D/g,'');
+    if (val.length >= 2) val = val.slice(0,2) + '/' + val.slice(2,4);
+    this.value = val;
+    document.getElementById('prev-expiry').textContent = this.value || 'MM/AA';
+  });
+
+  // Place order
+  document.getElementById('place-order-btn').addEventListener('click', placeOrder);
+
+  function updateTotals() {
+    const shippingMethod = document.querySelector('input[name="shipping-method"]:checked').value;
+    const totals = TCCart.calculateTotals(discountCode);
+    const shipping = shippingMethod === 'express' ? 9.95 : totals.shipping;
+    const total = totals.afterDiscount + shipping + totals.tax;
+
+    document.getElementById('ck-subtotal').textContent = TCUtils.formatCurrency(totals.subtotal);
+    document.getElementById('ck-shipping').textContent  = shipping === 0 ? 'Gratis' : TCUtils.formatCurrency(shipping);
+    document.getElementById('ck-tax').textContent       = TCUtils.formatCurrency(totals.tax);
+    document.getElementById('ck-total').textContent     = TCUtils.formatCurrency(total);
+
+    const discRow = document.getElementById('ck-discount-row');
+    if (totals.discountAmount > 0) {
+      discRow.style.display = 'flex';
+      document.getElementById('ck-discount').textContent = `-${TCUtils.formatCurrency(totals.discountAmount)}`;
+    }
+
+    document.getElementById('std-price').textContent = totals.subtotal >= 50 ? 'Gratis' : '€4,95';
+  }
+});
+
+async function placeOrder() {
+  const name    = document.getElementById('sh-name').value.trim();
+  const address = document.getElementById('sh-address').value.trim();
+  const city    = document.getElementById('sh-city').value.trim();
+  const zip     = document.getElementById('sh-zip').value.trim();
+  const cardNum = document.getElementById('card-number').value.replace(/\s/g,'');
+  const cardName= document.getElementById('card-name').value.trim();
+  const expiry  = document.getElementById('card-expiry').value.trim();
+  const cvv     = document.getElementById('card-cvv').value.trim();
+
+  if (!name || !address || !city) {
+    TCUtils.showToast('Por favor, completa todos los campos de envío.', 'warning'); return;
+  }
+  if (!cardNum || cardNum.length < 13 || !cardName || !expiry || !cvv) {
+    TCUtils.showToast('Por favor, completa todos los datos de pago.', 'warning'); return;
+  }
+
+  const btn = document.getElementById('place-order-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Procesando...';
+
+  await new Promise(r => setTimeout(r, 1500)); // simulate payment
+
+  const shippingMethod = document.querySelector('input[name="shipping-method"]:checked').value;
+  const discountCode   = sessionStorage.getItem('tc_discount_code') || '';
+
+  const result = TCOrders.createOrder({
+    address: `${address}, ${city} ${zip}`,
+    shippingMethod,
+    discountCode,
+    cardNumber: cardNum,
+  });
+
+  if (result.success) {
+    document.getElementById('checkout-content').style.display = 'none';
+    document.getElementById('order-confirmation').style.display = 'block';
+    document.getElementById('order-id-display').textContent = `Pedido #${result.order.id.slice(-8).toUpperCase()}`;
+    sessionStorage.removeItem('tc_discount_code');
+    TCUtils.showToast('¡Pedido realizado con éxito! 🎉', 'success');
+  } else {
+    TCUtils.showToast(result.message || 'Error al procesar el pedido.', 'error');
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-lock"></i> Confirmar pedido';
+  }
+}
+</script>
+</body>
+</html>

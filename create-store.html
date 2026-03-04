@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Crea tu tienda en TC MARKET SHOP" />
+  <title>Crear Tienda — TC MARKET SHOP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="navbar-logo"><div class="logo-icon"><i class="fas fa-store"></i></div>TC MARKET</a>
+    <div class="navbar-search" id="navbar-search-wrap">
+      <i class="fas fa-search search-icon"></i>
+      <input type="search" id="navbar-search" placeholder="Buscar..." aria-label="Buscar" />
+    </div>
+    <div class="navbar-actions">
+      <a href="cart.html" class="nav-icon-btn"><i class="fas fa-shopping-cart"></i><span class="badge cart-badge" style="display:none">0</span></a>
+      <div id="nav-guest" style="display:none;gap:.75rem;align-items:center">
+        <a href="login.html" class="btn-nav btn-nav-outline">Entrar</a>
+      </div>
+      <div id="nav-user" class="user-menu" style="display:none">
+        <div class="user-avatar" id="nav-avatar" data-dropdown-toggle="user-dropdown" role="button" tabindex="0"></div>
+        <div class="dropdown-menu" id="user-dropdown">
+          <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+          <a href="profile.html"><i class="fas fa-user"></i> Mi Perfil</a>
+          <div class="divider"></div>
+          <button data-action="logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<div id="mobile-overlay"></div>
+
+<div style="max-width:1100px;margin:0 auto;padding:var(--space-8) var(--space-6)">
+  <nav class="breadcrumbs">
+    <a href="index.html">Inicio</a>
+    <span class="separator">/</span>
+    <a href="dashboard.html">Dashboard</a>
+    <span class="separator">/</span>
+    <span class="current">Crear Tienda</span>
+  </nav>
+
+  <div class="page-header animate-fade-up">
+    <h1>Crear mi tienda</h1>
+    <p>Configura tu tienda y empieza a vender en minutos</p>
+  </div>
+
+  <div class="grid-2" style="gap:var(--space-8);align-items:start">
+    <!-- Form -->
+    <div class="card animate-fade-up">
+      <div class="card-header">
+        <h3><i class="fas fa-store" style="color:var(--primary)"></i> Información de la tienda</h3>
+      </div>
+      <div class="card-body">
+        <form id="store-form" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="store-name">Nombre de la tienda *</label>
+            <input type="text" id="store-name" class="form-control" placeholder="Ej: Mi Tienda Genial" required maxlength="50" />
+            <div class="invalid-feedback form-feedback" id="name-error"></div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="store-desc">Descripción</label>
+            <textarea id="store-desc" class="form-control" placeholder="Describe tu tienda, qué vendes, tu propuesta de valor..." rows="4" maxlength="500"></textarea>
+            <div class="form-hint"><span id="desc-count">0</span>/500 caracteres</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="store-category">Categoría principal</label>
+            <select id="store-category" class="form-control">
+              <option value="">Selecciona una categoría</option>
+              <option value="Electrónica">Electrónica</option>
+              <option value="Moda">Moda</option>
+              <option value="Hogar">Hogar</option>
+              <option value="Deportes">Deportes</option>
+              <option value="Libros">Libros</option>
+              <option value="Juguetes">Juguetes</option>
+              <option value="Alimentación">Alimentación</option>
+              <option value="Belleza">Belleza</option>
+              <option value="General">General</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="store-logo">URL del logo</label>
+            <input type="url" id="store-logo" class="form-control" placeholder="https://ejemplo.com/logo.png" />
+            <div class="form-hint">Deja en blanco para generar uno automáticamente</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="store-banner">URL del banner</label>
+            <input type="url" id="store-banner" class="form-control" placeholder="https://ejemplo.com/banner.jpg" />
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="store-color">Color de marca</label>
+            <div style="display:flex;gap:.75rem;align-items:center">
+              <input type="color" id="store-color" value="#6C63FF" style="width:48px;height:42px;padding:2px;border:2px solid var(--border);border-radius:var(--radius-md);cursor:pointer" />
+              <input type="text" id="store-color-hex" class="form-control" value="#6C63FF" placeholder="#6C63FF" style="flex:1" />
+            </div>
+          </div>
+
+          <div id="form-error" class="alert alert-danger" style="display:none">
+            <i class="fas fa-exclamation-circle"></i>
+            <div id="form-error-msg"></div>
+          </div>
+
+          <div id="success-banner" class="alert alert-success" style="display:none">
+            <i class="fas fa-check-circle"></i>
+            <div>¡Tienda creada con éxito! <a href="my-store.html" class="link-primary">Ver mi tienda →</a></div>
+          </div>
+
+          <div style="display:flex;gap:1rem">
+            <a href="dashboard.html" class="btn btn-ghost btn-lg" style="flex:1;justify-content:center">Cancelar</a>
+            <button type="submit" class="btn btn-primary btn-lg" style="flex:2" id="submit-btn">
+              <i class="fas fa-store"></i> Crear tienda
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Preview -->
+    <div style="position:sticky;top:calc(var(--navbar-h) + 1.5rem)">
+      <div class="card animate-fade-up delay-200">
+        <div class="card-header">
+          <h3><i class="fas fa-eye" style="color:var(--accent)"></i> Vista previa</h3>
+        </div>
+        <div class="card-body">
+          <!-- Store card preview -->
+          <div class="store-card">
+            <div id="preview-banner" class="store-card-banner" style="background:linear-gradient(135deg,#6C63FF,#888)">
+              <div class="store-card-logo" id="preview-logo">
+                <i class="fas fa-store" style="color:#888"></i>
+              </div>
+            </div>
+            <div class="store-card-body">
+              <h3 class="store-card-name" id="preview-name">Nombre de tu tienda</h3>
+              <p class="store-card-info" id="preview-desc" style="margin-bottom:.5rem">Descripción de tu tienda aparecerá aquí...</p>
+              <div style="display:flex;gap:.75rem;font-size:.8rem;color:var(--text-muted)">
+                <span><i class="fas fa-tag"></i> <span id="preview-cat">General</span></span>
+                <span><i class="fas fa-star" style="color:#FDCB6E"></i> —</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tips -->
+      <div class="card" style="margin-top:var(--space-4)">
+        <div class="card-body">
+          <h4 style="font-size:.9rem;margin-bottom:.75rem"><i class="fas fa-lightbulb" style="color:#FDCB6E"></i> Consejos</h4>
+          <ul style="list-style:disc;padding-left:1.2rem;font-size:.8rem;color:var(--text-muted);line-height:2">
+            <li>Elige un nombre fácil de recordar</li>
+            <li>Añade una descripción clara y atractiva</li>
+            <li>Usa un logo de alta calidad</li>
+            <li>El color de marca debe reflejar tu estilo</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/store.js"></script>
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/orders.js"></script>
+<script src="js/search.js"></script>
+<script src="js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  if (!TCAuth.requireAuth()) return;
+
+  // Check if user already has a store
+  const user = TCAuth.getCurrentUser();
+  const stores = TCStore.getStoresByUser(user.id);
+  if (stores.length > 0) {
+    TCUtils.showToast('Ya tienes una tienda. Redirigiendo...', 'info');
+    setTimeout(() => window.location.href = 'my-store.html', 1200);
+    return;
+  }
+
+  // Live preview
+  const nameInput   = document.getElementById('store-name');
+  const descInput   = document.getElementById('store-desc');
+  const catInput    = document.getElementById('store-category');
+  const logoInput   = document.getElementById('store-logo');
+  const bannerInput = document.getElementById('store-banner');
+  const colorInput  = document.getElementById('store-color');
+  const colorHex    = document.getElementById('store-color-hex');
+
+  nameInput.addEventListener('input',   () => { document.getElementById('preview-name').textContent  = nameInput.value || 'Nombre de tu tienda'; });
+  descInput.addEventListener('input',   () => {
+    document.getElementById('preview-desc').textContent = descInput.value || 'Descripción...';
+    document.getElementById('desc-count').textContent = descInput.value.length;
+  });
+  catInput.addEventListener('change',   () => { document.getElementById('preview-cat').textContent   = catInput.value || 'General'; });
+  logoInput.addEventListener('input',   () => {
+    const logo = document.getElementById('preview-logo');
+    logo.innerHTML = logoInput.value ? `<img src="${logoInput.value}" alt="Logo" onerror="this.style.display='none'">` : '<i class="fas fa-store" style="color:#888"></i>';
+  });
+  bannerInput.addEventListener('input', () => {
+    const banner = document.getElementById('preview-banner');
+    banner.style.background = bannerInput.value ? `url('${bannerInput.value}') center/cover` : `linear-gradient(135deg,${colorInput.value},#888)`;
+  });
+  colorInput.addEventListener('input',  () => {
+    colorHex.value = colorInput.value;
+    document.getElementById('preview-banner').style.background = `linear-gradient(135deg,${colorInput.value},#888)`;
+  });
+  colorHex.addEventListener('input', () => {
+    if (/^#[0-9A-Fa-f]{6}$/.test(colorHex.value)) {
+      colorInput.value = colorHex.value;
+      document.getElementById('preview-banner').style.background = `linear-gradient(135deg,${colorHex.value},#888)`;
+    }
+  });
+
+  // Submit
+  document.getElementById('store-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    document.getElementById('form-error').style.display = 'none';
+    document.getElementById('success-banner').style.display = 'none';
+
+    const data = {
+      name: nameInput.value.trim(),
+      description: descInput.value.trim(),
+      category: catInput.value,
+      logo: logoInput.value.trim(),
+      banner: bannerInput.value.trim(),
+      color: colorInput.value,
+    };
+
+    const btn = document.getElementById('submit-btn');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creando...';
+
+    await new Promise(r => setTimeout(r, 700));
+
+    const result = TCStore.createStore(data);
+    if (result.success) {
+      document.getElementById('success-banner').style.display = 'flex';
+      TCUtils.showToast('¡Tienda creada con éxito! 🎉', 'success');
+      btn.innerHTML = '<i class="fas fa-check"></i> Tienda creada';
+      setTimeout(() => window.location.href = 'my-store.html', 1500);
+    } else {
+      document.getElementById('form-error-msg').textContent = result.message;
+      document.getElementById('form-error').style.display = 'flex';
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fas fa-store"></i> Crear tienda';
+    }
+  });
+});
+</script>
+</body>
+</html>

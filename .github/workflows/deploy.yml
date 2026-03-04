@@ -1,0 +1,25 @@
+name: Deploy TC MARKET SHOP to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+      - copilot/create-marketplace-platform
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    name: Deploy to GitHub Pages
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to gh-pages branch
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: .

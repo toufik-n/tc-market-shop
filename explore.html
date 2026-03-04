@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Explora miles de productos en TC MARKET SHOP" />
+  <title>Explorar Productos — TC MARKET SHOP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+  <style>
+    .explore-layout { display: grid; grid-template-columns: 260px 1fr; gap: var(--space-6); align-items: start; }
+  </style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="navbar-logo"><div class="logo-icon"><i class="fas fa-store"></i></div>TC MARKET</a>
+    <div class="navbar-search" id="navbar-search-wrap">
+      <i class="fas fa-search search-icon"></i>
+      <input type="search" id="navbar-search" placeholder="Buscar productos, tiendas..." aria-label="Buscar" />
+    </div>
+    <div class="navbar-actions">
+      <a href="explore.html" class="nav-icon-btn" style="background:var(--primary-light);color:var(--primary)"><i class="fas fa-compass"></i></a>
+      <a href="cart.html" class="nav-icon-btn"><i class="fas fa-shopping-cart"></i><span class="badge cart-badge" style="display:none">0</span></a>
+      <div id="nav-guest" style="display:none;gap:.75rem;align-items:center">
+        <a href="login.html" class="btn-nav btn-nav-outline">Entrar</a>
+        <a href="register.html" class="btn-nav btn-nav-fill">Registrarse</a>
+      </div>
+      <div id="nav-user" class="user-menu" style="display:none">
+        <div class="user-avatar" id="nav-avatar" data-dropdown-toggle="user-dropdown" role="button" tabindex="0"></div>
+        <div class="dropdown-menu" id="user-dropdown">
+          <a href="profile.html"><i class="fas fa-user"></i> Mi Perfil</a>
+          <a href="orders.html"><i class="fas fa-box"></i> Mis Pedidos</a>
+          <div class="divider"></div>
+          <button data-action="logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<div id="mobile-overlay"></div>
+
+<div style="max-width:1280px;margin:0 auto;padding:var(--space-6)">
+  <nav class="breadcrumbs">
+    <a href="index.html">Inicio</a>
+    <span class="separator">/</span>
+    <span class="current">Explorar</span>
+  </nav>
+
+  <!-- Search header -->
+  <div class="animate-fade-up" style="margin-bottom:var(--space-6)">
+    <div style="max-width:600px;position:relative">
+      <i class="fas fa-search" style="position:absolute;left:1rem;top:50%;transform:translateY(-50%);color:var(--text-muted)"></i>
+      <input type="search" id="explore-search" class="form-control" placeholder="Buscar productos..." style="padding-left:3rem;font-size:1rem;height:52px;border-radius:var(--radius-full)" value="" />
+    </div>
+  </div>
+
+  <div class="explore-layout">
+    <!-- Sidebar filters -->
+    <aside>
+      <div class="filter-sidebar animate-fade-left">
+        <h3 style="font-size:.95rem;font-weight:600;margin-bottom:1rem"><i class="fas fa-sliders-h" style="color:var(--primary)"></i> Filtros</h3>
+
+        <!-- Category -->
+        <div class="filter-section">
+          <div class="filter-section-title">
+            Categoría
+            <span class="filter-reset" onclick="clearFilter('category')">Limpiar</span>
+          </div>
+          <div id="category-filters" style="display:flex;flex-direction:column;gap:.5rem"></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Price range -->
+        <div class="filter-section">
+          <div class="filter-section-title">
+            Precio
+            <span class="filter-reset" onclick="clearFilter('price')">Limpiar</span>
+          </div>
+          <div style="display:flex;gap:.5rem;align-items:center;margin-bottom:.75rem">
+            <input type="number" id="min-price" class="form-control" placeholder="Min" style="font-size:.8rem;padding:.4rem .6rem" min="0" />
+            <span style="color:var(--text-muted)">-</span>
+            <input type="number" id="max-price" class="form-control" placeholder="Max" style="font-size:.8rem;padding:.4rem .6rem" min="0" />
+          </div>
+          <input type="range" id="price-range" min="0" max="2500" value="2500" step="50" />
+          <div style="display:flex;justify-content:space-between;font-size:.75rem;color:var(--text-muted);margin-top:.3rem">
+            <span>€0</span><span>€2.500</span>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Rating -->
+        <div class="filter-section">
+          <div class="filter-section-title">Valoración mínima</div>
+          <div id="rating-filters" style="display:flex;flex-direction:column;gap:.5rem"></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <button class="btn btn-primary btn-block" onclick="applyFilters()">
+          <i class="fas fa-filter"></i> Aplicar filtros
+        </button>
+        <button class="btn btn-ghost btn-block" style="margin-top:.5rem" onclick="resetAllFilters()">
+          Restablecer todo
+        </button>
+      </div>
+    </aside>
+
+    <!-- Results -->
+    <div>
+      <!-- Results bar -->
+      <div class="search-results-bar animate-fade-right">
+        <div class="results-count">Mostrando <strong id="results-count">0</strong> productos</div>
+        <div style="display:flex;gap:1rem;align-items:center">
+          <select id="sort-select" class="form-control" style="width:auto;font-size:.875rem;padding:.4rem .8rem;height:auto">
+            <option value="relevance">Relevancia</option>
+            <option value="price_asc">Precio: menor a mayor</option>
+            <option value="price_desc">Precio: mayor a menor</option>
+            <option value="rating">Mejor valorados</option>
+            <option value="newest">Más recientes</option>
+          </select>
+          <div class="view-toggle">
+            <button class="view-btn active" id="grid-view-btn" aria-label="Vista cuadrícula" onclick="setView('grid')">
+              <i class="fas fa-th"></i>
+            </button>
+            <button class="view-btn" id="list-view-btn" aria-label="Vista lista" onclick="setView('list')">
+              <i class="fas fa-list"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active filters chips -->
+      <div id="active-filters" style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem"></div>
+
+      <!-- Products grid/list -->
+      <div id="products-grid" class="grid-4 stagger-children"></div>
+      <div id="products-list-view" style="display:none"></div>
+
+      <!-- Empty state -->
+      <div id="no-results" style="display:none">
+        <div class="empty-state">
+          <div class="empty-icon"><i class="fas fa-search"></i></div>
+          <h3>Sin resultados</h3>
+          <p>No encontramos productos con esos filtros. Intenta cambiar los criterios de búsqueda.</p>
+          <button class="btn btn-primary" onclick="resetAllFilters()">Limpiar filtros</button>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div class="pagination" id="pagination"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer" style="margin-top:4rem">
+  <div class="container">
+    <div class="footer-bottom">
+      <p>© 2024 TC MARKET SHOP</p>
+    </div>
+  </div>
+</footer>
+
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/store.js"></script>
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/orders.js"></script>
+<script src="js/search.js"></script>
+<script src="js/app.js"></script>
+<script>
+const CATEGORIES = ['Electrónica','Moda','Hogar','Deportes','Libros','Juguetes'];
+const PAGE_SIZE = 8;
+let currentView = 'grid';
+let currentPage = 1;
+let allResults  = [];
+
+let filters = { query: '', category: '', minPrice: 0, maxPrice: Infinity, minRating: 0, sort: 'relevance' };
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Category checkboxes
+  const catFilters = document.getElementById('category-filters');
+  catFilters.innerHTML = CATEGORIES.map(c => `
+    <label class="form-check" style="margin:0">
+      <input type="checkbox" class="form-check-input" data-category="${c}" onchange="onCategoryChange()" />
+      <span class="form-check-label" style="font-size:.875rem">${c}</span>
+    </label>
+  `).join('');
+
+  // Rating filters
+  const ratingFilters = document.getElementById('rating-filters');
+  ratingFilters.innerHTML = [4, 3, 2].map(r => `
+    <label class="form-check" style="margin:0">
+      <input type="radio" class="form-check-input" name="rating-filter" value="${r}" onchange="filters.minRating=${r};applyFilters()" />
+      <span class="form-check-label" style="font-size:.875rem">${'★'.repeat(r)}${'☆'.repeat(5-r)} y más</span>
+    </label>
+  `).join('');
+
+  // URL params
+  const params = TCSearch.getSearchParams();
+  if (params.q)        { filters.query    = params.q; document.getElementById('explore-search').value = params.q; }
+  if (params.category) { filters.category = params.category; }
+
+  // Pre-select category checkbox
+  if (filters.category) {
+    const cb = document.querySelector(`[data-category="${filters.category}"]`);
+    if (cb) cb.checked = true;
+  }
+
+  // Search input (debounced)
+  const debouncedApply = TCUtils.debounce(() => {
+    filters.query = document.getElementById('explore-search').value.trim();
+    currentPage = 1;
+    applyFilters();
+  }, 300);
+  document.getElementById('explore-search').addEventListener('input', debouncedApply);
+
+  // Sort
+  document.getElementById('sort-select').addEventListener('change', (e) => {
+    filters.sort = e.target.value;
+    applyFilters();
+  });
+
+  // Price range
+  document.getElementById('price-range').addEventListener('input', (e) => {
+    filters.maxPrice = parseFloat(e.target.value);
+    document.getElementById('max-price').value = e.target.value;
+    applyFilters();
+  });
+  document.getElementById('max-price').addEventListener('change', () => {
+    filters.maxPrice = parseFloat(document.getElementById('max-price').value) || Infinity;
+    applyFilters();
+  });
+  document.getElementById('min-price').addEventListener('change', () => {
+    filters.minPrice = parseFloat(document.getElementById('min-price').value) || 0;
+    applyFilters();
+  });
+
+  applyFilters();
+});
+
+function onCategoryChange() {
+  const checked = document.querySelectorAll('[data-category]:checked');
+  filters.category = checked.length === 1 ? checked[0].dataset.category : '';
+  applyFilters();
+}
+
+function applyFilters() {
+  currentPage = 1;
+  allResults = TCSearch.filterProducts(filters);
+  renderResults();
+  renderActiveFilters();
+}
+
+function resetAllFilters() {
+  filters = { query: '', category: '', minPrice: 0, maxPrice: Infinity, minRating: 0, sort: 'relevance' };
+  document.getElementById('explore-search').value = '';
+  document.getElementById('sort-select').value = 'relevance';
+  document.getElementById('price-range').value = 2500;
+  document.getElementById('min-price').value = '';
+  document.getElementById('max-price').value = '';
+  document.querySelectorAll('[data-category]').forEach(cb => cb.checked = false);
+  document.querySelectorAll('input[name="rating-filter"]').forEach(r => r.checked = false);
+  applyFilters();
+}
+
+function clearFilter(type) {
+  if (type === 'category') { filters.category = ''; document.querySelectorAll('[data-category]').forEach(cb => cb.checked = false); }
+  if (type === 'price') { filters.minPrice = 0; filters.maxPrice = Infinity; document.getElementById('min-price').value=''; document.getElementById('max-price').value=''; document.getElementById('price-range').value=2500; }
+  applyFilters();
+}
+
+function renderResults() {
+  const total = allResults.length;
+  document.getElementById('results-count').textContent = total;
+
+  const gridEl = document.getElementById('products-grid');
+  const listEl = document.getElementById('products-list-view');
+  const noEl   = document.getElementById('no-results');
+
+  if (!total) {
+    gridEl.style.display = 'none';
+    listEl.style.display = 'none';
+    noEl.style.display   = 'block';
+    document.getElementById('pagination').innerHTML = '';
+    return;
+  }
+  noEl.style.display = 'none';
+
+  // Pagination slice
+  const start = (currentPage - 1) * PAGE_SIZE;
+  const page  = allResults.slice(start, start + PAGE_SIZE);
+
+  if (currentView === 'grid') {
+    gridEl.style.display = 'grid';
+    listEl.style.display = 'none';
+    gridEl.innerHTML = page.map(p => renderProductCard(p)).join('');
+  } else {
+    gridEl.style.display = 'none';
+    listEl.style.display = 'block';
+    listEl.innerHTML = page.map(p => renderProductListItem(p)).join('');
+  }
+
+  renderPagination(total);
+}
+
+function renderProductCard(p) {
+  const price    = TCProducts.getEffectivePrice(p);
+  const discount = TCProducts.getDiscount(p);
+  return `
+    <div class="product-card">
+      <div class="product-card-img-wrap">
+        <img src="${p.image}" alt="${p.name}" class="product-card-image" loading="lazy" />
+        ${discount ? `<div class="product-card-tag"><span class="tag tag-sale">-${discount}%</span></div>` : ''}
+        <div class="product-card-actions">
+          <button class="product-card-action-btn" onclick="addCart('${p.id}')" aria-label="Añadir"><i class="fas fa-shopping-cart"></i></button>
+          <a href="product-detail.html?id=${p.id}" class="product-card-action-btn" aria-label="Ver"><i class="fas fa-eye"></i></a>
+        </div>
+      </div>
+      <div class="product-card-body">
+        <div class="product-card-category">${p.category}</div>
+        <h3 class="product-card-name"><a href="product-detail.html?id=${p.id}">${p.name}</a></h3>
+        <div class="product-card-price">
+          <span class="price-current">${TCUtils.formatCurrency(price)}</span>
+          ${p.salePrice ? `<span class="price-original">${TCUtils.formatCurrency(p.price)}</span>` : ''}
+        </div>
+        <div class="rating">${TCUtils.renderStars(p.rating)}<span class="count">(${p.reviews})</span></div>
+      </div>
+      <div class="product-card-footer">
+        <button class="btn btn-primary btn-sm btn-block" onclick="addCart('${p.id}')"><i class="fas fa-cart-plus"></i> Añadir</button>
+      </div>
+    </div>
+  `;
+}
+
+function renderProductListItem(p) {
+  const price    = TCProducts.getEffectivePrice(p);
+  const discount = TCProducts.getDiscount(p);
+  return `
+    <div class="product-list-item" style="margin-bottom:.75rem">
+      <img src="${p.image}" alt="${p.name}" loading="lazy" />
+      <div class="product-list-info">
+        <div class="cart-item-name"><a href="product-detail.html?id=${p.id}" style="color:var(--text)">${p.name}</a></div>
+        <div class="cart-item-store">${p.category} ${discount ? `· <span class="tag tag-sale" style="font-size:.7rem">-${discount}%</span>` : ''}</div>
+        <div class="rating" style="margin-top:.3rem">${TCUtils.renderStars(p.rating)}<span class="count">(${p.reviews})</span></div>
+        <p style="font-size:.8rem;color:var(--text-muted);margin:.3rem 0 0">${TCUtils.truncate(p.description, 100)}</p>
+      </div>
+      <div style="text-align:right;flex-shrink:0">
+        <div class="price-current" style="font-size:1.1rem">${TCUtils.formatCurrency(price)}</div>
+        ${p.salePrice ? `<div class="price-original" style="font-size:.8rem">${TCUtils.formatCurrency(p.price)}</div>` : ''}
+      </div>
+      <div class="product-list-actions">
+        <button class="btn btn-primary btn-sm" onclick="addCart('${p.id}')"><i class="fas fa-cart-plus"></i> Añadir</button>
+        <a href="product-detail.html?id=${p.id}" class="btn btn-outline btn-sm">Ver</a>
+      </div>
+    </div>
+  `;
+}
+
+function renderPagination(total) {
+  const pages = Math.ceil(total / PAGE_SIZE);
+  const el = document.getElementById('pagination');
+  if (pages <= 1) { el.innerHTML = ''; return; }
+  let html = `<button class="page-btn" ${currentPage===1?'disabled':''} onclick="goPage(${currentPage-1})"><i class="fas fa-chevron-left"></i></button>`;
+  for (let i = 1; i <= pages; i++) {
+    html += `<button class="page-btn ${i===currentPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
+  }
+  html += `<button class="page-btn" ${currentPage===pages?'disabled':''} onclick="goPage(${currentPage+1})"><i class="fas fa-chevron-right"></i></button>`;
+  el.innerHTML = html;
+}
+
+function goPage(n) { currentPage = n; renderResults(); window.scrollTo({ top: 0, behavior: 'smooth' }); }
+
+function setView(view) {
+  currentView = view;
+  document.getElementById('grid-view-btn').classList.toggle('active', view === 'grid');
+  document.getElementById('list-view-btn').classList.toggle('active', view === 'list');
+  renderResults();
+}
+
+function renderActiveFilters() {
+  const el = document.getElementById('active-filters');
+  const chips = [];
+  if (filters.query)    chips.push({ label: `"${filters.query}"`, clear: () => { filters.query=''; document.getElementById('explore-search').value=''; applyFilters(); } });
+  if (filters.category) chips.push({ label: filters.category, clear: () => clearFilter('category') });
+  if (filters.maxPrice < Infinity) chips.push({ label: `Hasta €${filters.maxPrice}`, clear: () => clearFilter('price') });
+  if (filters.minRating) chips.push({ label: `${filters.minRating}+ estrellas`, clear: () => { filters.minRating=0; document.querySelectorAll('input[name="rating-filter"]').forEach(r=>r.checked=false); applyFilters(); } });
+  el.innerHTML = chips.map((c, i) => `
+    <span class="tag tag-primary" style="cursor:pointer" onclick="chips[${i}].clear()">
+      ${c.label} <i class="fas fa-times" style="margin-left:.3rem;font-size:.65rem"></i>
+    </span>
+  `).join('');
+  // Use data attr instead (simpler)
+  el.innerHTML = chips.map(c => `
+    <span class="tag tag-primary">${c.label}</span>
+  `).join('');
+}
+
+function addCart(productId) {
+  const res = TCCart.addToCart(productId, 1);
+  if (res.success) TCUtils.showToast('Añadido al carrito', 'success');
+  else TCUtils.showToast(res.message, 'error');
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Mis pedidos en TC MARKET SHOP" />
+  <title>Mis Pedidos — TC MARKET SHOP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/responsive.css" />
+</head>
+<body>
+<nav class="navbar">
+  <div class="container">
+    <a href="index.html" class="navbar-logo"><div class="logo-icon"><i class="fas fa-store"></i></div>TC MARKET</a>
+    <div class="navbar-search" id="navbar-search-wrap">
+      <i class="fas fa-search search-icon"></i>
+      <input type="search" id="navbar-search" placeholder="Buscar..." aria-label="Buscar" />
+    </div>
+    <div class="navbar-actions">
+      <a href="cart.html" class="nav-icon-btn"><i class="fas fa-shopping-cart"></i><span class="badge cart-badge" style="display:none">0</span></a>
+      <div id="nav-guest" style="display:none;gap:.75rem;align-items:center"><a href="login.html" class="btn-nav btn-nav-outline">Entrar</a></div>
+      <div id="nav-user" class="user-menu" style="display:none">
+        <div class="user-avatar" id="nav-avatar" data-dropdown-toggle="user-dropdown" role="button" tabindex="0"></div>
+        <div class="dropdown-menu" id="user-dropdown">
+          <a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+          <a href="profile.html"><i class="fas fa-user"></i> Mi Perfil</a>
+          <div class="divider"></div>
+          <button data-action="logout"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+<div id="mobile-overlay"></div>
+
+<div style="max-width:1000px;margin:0 auto;padding:var(--space-6)">
+  <nav class="breadcrumbs">
+    <a href="index.html">Inicio</a>
+    <span class="separator">/</span>
+    <span class="current">Mis Pedidos</span>
+  </nav>
+  <div class="page-header animate-fade-up">
+    <h1>Mis pedidos</h1>
+    <p>Historial y estado de tus compras</p>
+  </div>
+
+  <!-- Tabs: As buyer / As seller -->
+  <div class="tabs animate-fade-up" id="orders-tabs">
+    <button class="tab-btn active" data-tab="buyer">Como comprador</button>
+    <button class="tab-btn" data-tab="seller">Como vendedor</button>
+  </div>
+
+  <!-- Buyer orders -->
+  <div class="tab-panel active" data-panel="buyer" id="buyer-orders-panel">
+    <div id="buyer-orders-list"></div>
+  </div>
+
+  <!-- Seller orders -->
+  <div class="tab-panel" data-panel="seller" id="seller-orders-panel">
+    <div id="seller-orders-list"></div>
+  </div>
+</div>
+
+<!-- Order detail modal -->
+<div class="modal-overlay" id="order-modal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-order-title">Detalle del pedido</h4>
+      <button class="modal-close" data-modal-close="order-modal"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body" id="modal-order-body"></div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer" style="margin-top:4rem">
+  <div class="container">
+    <div class="footer-bottom">
+      <p>© 2024 TC MARKET SHOP</p>
+    </div>
+  </div>
+</footer>
+
+<div id="toast-container" class="toast-container" aria-live="polite"></div>
+<script src="js/utils.js"></script>
+<script src="js/auth.js"></script>
+<script src="js/store.js"></script>
+<script src="js/products.js"></script>
+<script src="js/cart.js"></script>
+<script src="js/orders.js"></script>
+<script src="js/search.js"></script>
+<script src="js/app.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  if (!TCAuth.requireAuth()) return;
+  const user = TCAuth.getCurrentUser();
+
+  const buyerOrders  = TCOrders.getOrdersByUser(user.id);
+  const sellerOrders = TCOrders.getOrdersBySeller(user.id);
+
+  renderOrderList(buyerOrders,  'buyer-orders-list',  false);
+  renderOrderList(sellerOrders, 'seller-orders-list', true);
+});
+
+function statusLabel(status) {
+  const map = { pendiente:'Pendiente', procesando:'Procesando', enviado:'Enviado', entregado:'Entregado', cancelado:'Cancelado' };
+  return map[status] || status;
+}
+
+function renderOrderList(orders, containerId, isSeller) {
+  const container = document.getElementById(containerId);
+  if (!orders.length) {
+    container.innerHTML = `
+      <div class="empty-state" style="padding:3rem">
+        <div class="empty-icon"><i class="fas fa-inbox"></i></div>
+        <h3>No hay pedidos</h3>
+        <p>${isSeller ? 'Aún no has recibido pedidos en tu tienda.' : 'Todavía no has realizado ninguna compra.'}</p>
+        <a href="explore.html" class="btn btn-primary">Explorar productos</a>
+      </div>
+    `;
+    return;
+  }
+
+  container.innerHTML = orders.map(order => `
+    <div class="card animate-fade-up" style="margin-bottom:1rem">
+      <div class="card-body">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem">
+          <div>
+            <h4 style="font-size:.9rem;margin-bottom:.2rem">Pedido #${order.id.slice(-8).toUpperCase()}</h4>
+            <div style="font-size:.8rem;color:var(--text-muted)"><i class="fas fa-calendar"></i> ${TCUtils.formatDateTime(order.createdAt)}</div>
+          </div>
+          <span class="status-badge status-${order.status}">${statusLabel(order.status)}</span>
+        </div>
+
+        <!-- Items -->
+        <div style="display:flex;gap:.75rem;overflow-x:auto;padding-bottom:.5rem;margin-bottom:1rem">
+          ${order.items.map(item => `
+            <div style="flex-shrink:0;text-align:center;width:80px">
+              <img src="${item.image}" alt="${item.name}" style="width:80px;height:80px;border-radius:var(--radius-md);object-fit:cover" />
+              <div style="font-size:.7rem;color:var(--text-muted);margin-top:.2rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${TCUtils.truncate(item.name, 15)}</div>
+              <div style="font-size:.75rem;font-weight:600">x${item.qty}</div>
+            </div>
+          `).join('')}
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem">
+          <div style="font-size:.875rem;color:var(--text-muted)">
+            <i class="fas fa-truck"></i> ${order.shippingMethod === 'express' ? 'Express' : 'Estándar'} &nbsp;|&nbsp;
+            <i class="fas fa-map-marker-alt"></i> ${TCUtils.truncate(order.address, 35)}
+          </div>
+          <div style="display:flex;align-items:center;gap:1rem">
+            <strong style="font-size:1rem">${TCUtils.formatCurrency(order.total)}</strong>
+            <button class="btn btn-outline btn-sm" onclick="showOrderDetail('${order.id}')">
+              <i class="fas fa-eye"></i> Ver detalle
+            </button>
+            ${isSeller ? `<select class="form-control" style="font-size:.8rem;padding:.3rem .8rem;width:auto;height:auto" onchange="updateStatus('${order.id}', this.value)">
+              <option value="pendiente"   ${order.status==='pendiente'   ? 'selected':''}>Pendiente</option>
+              <option value="procesando"  ${order.status==='procesando'  ? 'selected':''}>Procesando</option>
+              <option value="enviado"     ${order.status==='enviado'     ? 'selected':''}>Enviado</option>
+              <option value="entregado"   ${order.status==='entregado'   ? 'selected':''}>Entregado</option>
+              <option value="cancelado"   ${order.status==='cancelado'   ? 'selected':''}>Cancelado</option>
+            </select>` : ''}
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function showOrderDetail(orderId) {
+  const order = TCOrders.getOrderById(orderId);
+  if (!order) return;
+
+  const statusSteps = ['pendiente', 'procesando', 'enviado', 'entregado'];
+  const currentIdx  = statusSteps.indexOf(order.status);
+
+  document.getElementById('modal-order-title').textContent = `Pedido #${order.id.slice(-8).toUpperCase()}`;
+  document.getElementById('modal-order-body').innerHTML = `
+    <!-- Timeline -->
+    <div class="order-timeline" style="margin-bottom:2rem">
+      ${statusSteps.map((s, i) => `
+        <div class="timeline-item ${i < currentIdx ? 'done' : i === currentIdx ? 'active' : ''}">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <div class="timeline-title">${statusLabel(s)}</div>
+            <div class="timeline-date">${i <= currentIdx ? TCUtils.formatDate(order.updatedAt) : 'Pendiente'}</div>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+
+    <!-- Products -->
+    <h4 style="font-size:.9rem;margin-bottom:.75rem">Productos</h4>
+    ${order.items.map(item => `
+      <div style="display:flex;gap:1rem;margin-bottom:.75rem;align-items:center">
+        <img src="${item.image}" alt="${item.name}" style="width:56px;height:56px;border-radius:var(--radius-md);object-fit:cover" />
+        <div style="flex:1">
+          <div style="font-weight:600;font-size:.875rem">${item.name}</div>
+          <div style="font-size:.8rem;color:var(--text-muted)">x${item.qty} · ${TCUtils.formatCurrency(item.price)}</div>
+        </div>
+        <div style="font-weight:700">${TCUtils.formatCurrency(item.price * item.qty)}</div>
+      </div>
+    `).join('')}
+
+    <div class="divider"></div>
+
+    <!-- Totals -->
+    <div class="summary-row"><span>Subtotal</span><span>${TCUtils.formatCurrency(order.subtotal)}</span></div>
+    ${order.discount > 0 ? `<div class="summary-row" style="color:var(--success)"><span>Descuento</span><span>-${TCUtils.formatCurrency(order.discount)}</span></div>` : ''}
+    <div class="summary-row"><span>Envío</span><span>${order.shipping === 0 ? 'Gratis' : TCUtils.formatCurrency(order.shipping)}</span></div>
+    <div class="summary-row"><span>IVA</span><span>${TCUtils.formatCurrency(order.tax)}</span></div>
+    <div class="summary-row total"><span>Total</span><span>${TCUtils.formatCurrency(order.total)}</span></div>
+
+    <div class="divider"></div>
+    <p style="font-size:.85rem"><strong>Dirección:</strong> ${order.address}</p>
+    <p style="font-size:.85rem"><strong>Método:</strong> ${order.shippingMethod === 'express' ? 'Express' : 'Estándar'}</p>
+  `;
+
+  TCApp.openModal('order-modal');
+}
+
+function updateStatus(orderId, status) {
+  const res = TCOrders.updateOrderStatus(orderId, status);
+  if (res.success) {
+    TCUtils.showToast('Estado actualizado', 'success');
+    // Re-render seller orders
+    const user = TCAuth.getCurrentUser();
+    const sellerOrders = TCOrders.getOrdersBySeller(user.id);
+    renderOrderList(sellerOrders, 'seller-orders-list', true);
+  }
+}
+</script>
+</body>
+</html>
